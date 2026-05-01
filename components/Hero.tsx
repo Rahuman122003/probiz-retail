@@ -13,12 +13,12 @@ export default function Hero() {
     const scale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
 
     return (
-        <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden mesh-bg pt-32 pb-20">
+        <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden mesh-bg pt-24 sm:pt-32 pb-16 sm:pb-20">
             <div className="noise" />
 
             {/* Animated gradient orb */}
             <motion.div
-                className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full opacity-30 blur-3xl"
+                className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] sm:w-[800px] h-[500px] sm:h-[800px] rounded-full opacity-30 blur-3xl"
                 style={{
                     background: "conic-gradient(from 0deg, #0066ff, #8b5cf6, #ec4899, #0066ff)",
                 }}
@@ -26,18 +26,18 @@ export default function Hero() {
                 transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
             />
 
-            <motion.div style={{ y, opacity, scale }} className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+            <motion.div style={{ y, opacity, scale }} className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 text-center">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass text-[12px] font-medium text-ink-600 mb-10"
+                    className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass text-[11px] sm:text-[12px] font-medium text-ink-600 mb-8 sm:mb-10"
                 >
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     Introducing ProBiz Retail 3.0
                 </motion.div>
 
-                <h1 className="font-display font-semibold tracking-ultra text-[14vw] md:text-[8.5vw] lg:text-[7.5vw] leading-[0.92] text-ink-950">
+                <h1 className="font-display font-semibold tracking-ultra text-[11vw] sm:text-[8.5vw] lg:text-[7.5vw] leading-[0.92] text-ink-950">
                     <span className="block"><WordReveal text="Run your entire" /></span>
                     <span className="block">
                         <WordReveal text="business with" delay={0.3} />{" "}
@@ -51,7 +51,7 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 1 }}
-                    className="mt-10 text-lg md:text-xl text-ink-400 max-w-2xl mx-auto font-light tracking-tight"
+                    className="mt-8 sm:mt-10 text-base sm:text-lg md:text-xl text-ink-400 max-w-2xl mx-auto font-light tracking-tight px-2"
                 >
                     GST billing. Inventory. Accounting. Unified into one breathtakingly simple platform.
                 </motion.p>
@@ -60,25 +60,25 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 1.2 }}
-                    className="mt-12 flex items-center justify-center gap-4"
+                    className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
                 >
                     <Magnetic>
-                        <button className="group relative px-7 py-3.5 rounded-full bg-ink-950 text-white text-[14px] font-medium overflow-hidden">
+                        <button className="group relative w-full sm:w-auto px-7 py-3.5 rounded-full bg-ink-950 text-white text-[14px] font-medium overflow-hidden">
                             <span className="relative z-10">Start Free</span>
                             <div className="absolute inset-0 bg-gradient-to-r from-accent to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </button>
                     </Magnetic>
                     <Magnetic>
-                        <button className="px-7 py-3.5 rounded-full border border-ink-200 text-[14px] font-medium hover:bg-white transition-colors">
+                        <button className="w-full sm:w-auto px-7 py-3.5 rounded-full border border-ink-200 text-[14px] font-medium hover:bg-white transition-colors">
                             Book a Demo →
                         </button>
                     </Magnetic>
                 </motion.div>
 
-                {/* Floating UI cards */}
-                <div className="relative mt-24 h-[300px] hidden md:block">
+                {/* Floating UI cards — hidden on mobile, visible tablet+ */}
+                <div className="relative mt-16 sm:mt-24 h-[220px] sm:h-[300px] hidden md:block">
                     <FloatingCard
-                        className="absolute left-[8%] top-0"
+                        className="absolute left-[5%] lg:left-[8%] top-0"
                         delay={1.4}
                         rotate={-6}
                     >
@@ -112,7 +112,7 @@ export default function Hero() {
                         </div>
                     </FloatingCard>
 
-                    <FloatingCard className="absolute right-[8%] top-2" delay={1.8} rotate={5}>
+                    <FloatingCard className="absolute right-[5%] lg:right-[8%] top-2" delay={1.8} rotate={5}>
                         <div className="flex items-center gap-3 mb-3">
                             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-purple-600 flex items-center justify-center">
                                 <Sparkles size={16} className="text-white" />
@@ -133,7 +133,7 @@ function FloatingCard({ children, className, delay, rotate }: { children: React.
             initial={{ opacity: 0, y: 40, rotate: 0 }}
             animate={{ opacity: 1, y: 0, rotate }}
             transition={{ duration: 1.2, delay, ease: [0.22, 1, 0.36, 1] }}
-            className={`w-[240px] p-5 rounded-2xl glass shadow-2xl shadow-ink-950/5 ${className}`}
+            className={`w-[200px] lg:w-[240px] p-4 lg:p-5 rounded-2xl glass shadow-2xl shadow-ink-950/5 ${className}`}
         >
             <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay }}>
                 {children}

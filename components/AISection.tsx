@@ -16,7 +16,7 @@ export default function AISection() {
     const rotate = useTransform(scrollYProgress, [0, 1], [0, 180]);
 
     return (
-        <section ref={ref} className="relative py-32 md:py-48 bg-ink-950 text-white overflow-hidden">
+        <section ref={ref} className="relative py-20 sm:py-32 md:py-48 bg-ink-950 text-white overflow-hidden">
             <div className="noise opacity-[0.04]" />
 
             {/* Animated grid */}
@@ -27,26 +27,26 @@ export default function AISection() {
 
             <motion.div
                 style={{ rotate }}
-                className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full opacity-30 blur-3xl"
+                className="absolute -top-40 -right-40 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] rounded-full opacity-30 blur-3xl"
             >
                 <div className="w-full h-full bg-gradient-to-br from-accent via-purple-600 to-pink-600 rounded-full" />
             </motion.div>
 
-            <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
+            <div className="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
                 <div className="max-w-4xl">
-                    <div className="text-[11px] uppercase tracking-[0.25em] text-white/40 font-semibold mb-6">— Intelligence</div>
-                    <h2 className="font-display text-5xl md:text-8xl font-semibold tracking-ultra leading-[0.92]">
+                    <div className="text-[11px] uppercase tracking-[0.25em] text-white/40 font-semibold mb-4 sm:mb-6">— Intelligence</div>
+                    <h2 className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-semibold tracking-ultra leading-[0.92]">
                         <WordReveal text="Built with" />{" "}
                         <span className="italic font-light text-gradient-accent"><WordReveal text="intelligence" delay={0.3} /></span>
-                        <br />
+                        <br className="hidden sm:block" />
                         <WordReveal text="at its core." delay={0.5} />
                     </h2>
-                    <p className="mt-10 text-xl text-white/60 max-w-xl font-light tracking-tight">
+                    <p className="mt-6 sm:mt-10 text-base sm:text-lg md:text-xl text-white/60 max-w-xl font-light tracking-tight">
                         Every workflow is supercharged by ProBiz AI — quietly working behind the scenes, so you don&apos;t have to.
                     </p>
                 </div>
 
-                <div className="mt-24 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="mt-16 sm:mt-24 grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                     {aiFeatures.map((f, i) => (
                         <motion.div
                             key={i}
@@ -56,9 +56,9 @@ export default function AISection() {
                             transition={{ duration: 0.8, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                             className="border-t border-white/10 pt-6"
                         >
-                            <div className="font-display text-6xl font-semibold tracking-tightest text-gradient-accent">{f.metric}</div>
-                            <div className="text-xs text-white/40 mt-2">{f.label}</div>
-                            <div className="text-base font-medium mt-4">{f.title}</div>
+                            <div className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tightest text-gradient-accent">{f.metric}</div>
+                            <div className="text-[10px] sm:text-xs text-white/40 mt-2">{f.label}</div>
+                            <div className="text-sm sm:text-base font-medium mt-3 sm:mt-4">{f.title}</div>
                         </motion.div>
                     ))}
                 </div>

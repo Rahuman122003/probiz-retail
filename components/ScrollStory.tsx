@@ -10,12 +10,13 @@ const modules = [
     { icon: BarChart3, title: "Reports", subtitle: "Decisions backed by data.", desc: "Profit & loss, GSTR-ready statements, cash flow projections — exported in one tap.", color: "from-emerald-500 to-teal-500" },
 ];
 
-export default function ScrollStory() {
+/* ── Desktop: scroll-driven two-column layout ── */
+function DesktopScrollStory() {
     const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
     return (
-        <section ref={ref} className="relative" style={{ height: `${modules.length * 100}vh` }}>
+        <section ref={ref} className="relative hidden lg:block" style={{ height: `${modules.length * 100}vh` }}>
             <div className="sticky top-0 h-screen flex items-center overflow-hidden bg-white">
                 <div className="max-w-7xl mx-auto w-full px-6 lg:px-10 grid lg:grid-cols-2 gap-16 items-center">
                     {/* LEFT */}
@@ -38,22 +39,76 @@ export default function ScrollStory() {
     );
 }
 
+/* ── Mobile: stacked cards ── */
+function MobileScrollStory() {
+    return (
+        <section className="lg:hidden py-20 sm:py-28 bg-white">
+            <div className="max-w-xl mx-auto px-5 sm:px-6 mb-12">
+                <div className="text-[11px] uppercase tracking-[0.25em] text-ink-400 font-semibold mb-4">— Modules</div>
+                <h2 className="font-display text-4xl sm:text-5xl font-semibold tracking-tightest text-ink-950 leading-[0.95]">
+                    Everything your business needs.
+                </h2>
+            </div>
+            <div className="space-y-6 px-5 sm:px-6 max-w-xl mx-auto">
+                {modules.map((m, i) => {
+                    const Icon = m.icon;
+                    return (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.7, delay: i * 0.08 }}
+                            className="rounded-3xl overflow-hidden border border-ink-100 bg-white"
+                        >
+                            <div className={`bg-gradient-to-br ${m.color} p-6 sm:p-8`}>
+                                <Icon size={32} strokeWidth={1.5} className="text-white mb-4" />
+                                <div className="text-white text-2xl sm:text-3xl font-semibold tracking-tight">{m.title}</div>
+                            </div>
+                            <div className="p-6 sm:p-8">
+                                <p className="text-lg font-light text-ink-700 mb-2">{m.subtitle}</p>
+                                <p className="text-sm text-ink-400 leading-relaxed">{m.desc}</p>
+                            </div>
+                        </motion.div>
+                    );
+                })}
+            </div>
+        </section>
+    );
+}
+
+export default function ScrollStory() {
+    return (
+        <>
+            <DesktopScrollStory />
+            <MobileScrollStory />
+        </>
+    );
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function ModuleText({ m, i, total, scrollYProgress }: { m: any, i: number, total: number, scrollYProgress: MotionValue<number> }) {
     const start = i / total;
     const end = (i + 1) / total;
-    const opacity = useTransform(scrollYProgress, [start, start + 0.05, end - 0.05, end], [0, 1, 1, 0]);
+    // First item starts visible (opacity 1 at start=0)
+    const opacityInput = i === 0
+        ? [start, end - 0.05, end]
+        : [start, start + 0.05, end - 0.05, end];
+    const opacityOutput = i === 0
+        ? [1, 1, 0]
+        : [0, 1, 1, 0];
+    const opacity = useTransform(scrollYProgress, opacityInput, opacityOutput);
     const y = useTransform(scrollYProgress, [start, end], [0, -40]);
 
     return (
-        <motion.div style={{ opacity, y }} className="absolute inset-0">
+        <motion.div style={{ opacity, y }} className="absolute inset-0 flex flex-col justify-center">
             <div className="text-[11px] uppercase tracking-[0.25em] text-ink-400 font-semibold mb-6">
                 0{i + 1} — Module
             </div>
-            <h3 className="font-display text-6xl md:text-7xl font-semibold tracking-tightest text-ink-950 mb-4">
+            <h3 className="font-display text-6xl xl:text-7xl font-semibold tracking-tightest text-ink-950 mb-4">
                 {m.title}
             </h3>
-            <p className="text-2xl text-ink-600 font-light tracking-tight mb-6">{m.subtitle}</p>
+            <p className="text-xl xl:text-2xl text-ink-600 font-light tracking-tight mb-6">{m.subtitle}</p>
             <p className="text-base text-ink-400 max-w-md leading-relaxed">{m.desc}</p>
         </motion.div>
     );
@@ -63,20 +118,26 @@ function ModuleText({ m, i, total, scrollYProgress }: { m: any, i: number, total
 function ModuleCard({ m, i, total, scrollYProgress }: { m: any, i: number, total: number, scrollYProgress: MotionValue<number> }) {
     const start = i / total;
     const end = (i + 1) / total;
-    const opacity = useTransform(scrollYProgress, [start, start + 0.05, end - 0.05, end], [0, 1, 1, 0]);
+    const opacityInput = i === 0
+        ? [start, end - 0.05, end]
+        : [start, start + 0.05, end - 0.05, end];
+    const opacityOutput = i === 0
+        ? [1, 1, 0]
+        : [0, 1, 1, 0];
+    const opacity = useTransform(scrollYProgress, opacityInput, opacityOutput);
     const scale = useTransform(scrollYProgress, [start, start + 0.1, end - 0.1, end], [0.85, 1, 1, 1.1]);
 
     const Icon = m.icon;
     return (
         <motion.div
             style={{ opacity, scale }}
-            className="absolute w-full max-w-md aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl shadow-ink-950/10"
+            className="absolute w-full max-w-sm xl:max-w-md aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl shadow-ink-950/10"
         >
-            <div className={`w-full h-full bg-gradient-to-br ${m.color} p-10 flex flex-col justify-between`}>
+            <div className={`w-full h-full bg-gradient-to-br ${m.color} p-8 xl:p-10 flex flex-col justify-between`}>
                 <Icon size={48} strokeWidth={1.5} className="text-white" />
                 <div className="text-white">
                     <div className="text-xs uppercase tracking-widest opacity-70">ProBiz</div>
-                    <div className="text-4xl font-semibold tracking-tight mt-1">{m.title}</div>
+                    <div className="text-3xl xl:text-4xl font-semibold tracking-tight mt-1">{m.title}</div>
                 </div>
             </div>
         </motion.div>
