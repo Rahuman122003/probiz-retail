@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import CareersContent from "./CareersContent";
 
 export const metadata: Metadata = {
-    title: "Careers — ProBiz Retail",
+    title: "Careers — Probiz Retail",
     description: "Join the team building India's smartest business platform. View open positions.",
 };
 

@@ -18,7 +18,7 @@ export default function CareersContent() {
         <section className="py-16 sm:py-24 bg-white">
             <div className="max-w-4xl mx-auto px-5 sm:px-6">
                 <div className="mb-12 sm:mb-16">
-                    <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-6 sm:mb-8">Why ProBiz?</h2>
+                    <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-6 sm:mb-8">Why Probiz?</h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                         {perks.map((p, i) => (
                             <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}

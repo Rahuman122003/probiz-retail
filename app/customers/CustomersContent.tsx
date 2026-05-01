@@ -2,10 +2,10 @@
 import { motion } from "framer-motion";
 
 const stories = [
-    { company: "Sharma Textiles", industry: "Textiles", quote: "ProBiz cut our billing time by 80%. The AI catches mistakes we'd never spot.", person: "Priya Sharma", role: "Founder", metric: "80%", metricLabel: "Faster billing" },
-    { company: "Mehta Electronics", industry: "Electronics", quote: "We replaced four tools with ProBiz. Our accountant is finally happy.", person: "Rohan Mehta", role: "CEO", metric: "4→1", metricLabel: "Tools replaced" },
+    { company: "Sharma Textiles", industry: "Textiles", quote: "Probiz cut our billing time by 80%. The AI catches mistakes we'd never spot.", person: "Priya Sharma", role: "Founder", metric: "80%", metricLabel: "Faster billing" },
+    { company: "Mehta Electronics", industry: "Electronics", quote: "We replaced four tools with Probiz. Our accountant is finally happy.", person: "Rohan Mehta", role: "CEO", metric: "4→1", metricLabel: "Tools replaced" },
     { company: "Verma Pharma", industry: "Pharmaceuticals", quote: "The forecasting alone has saved us ₹40 lakhs in dead stock this year.", person: "Anjali Verma", role: "COO", metric: "₹40L", metricLabel: "Saved annually" },
-    { company: "Chennai Silks", industry: "Retail", quote: "Multi-location inventory management was a nightmare. ProBiz made it seamless.", person: "Karthik Raja", role: "Operations Head", metric: "15", metricLabel: "Stores managed" },
+    { company: "Chennai Silks", industry: "Retail", quote: "Multi-location inventory management was a nightmare. Probiz made it seamless.", person: "Karthik Raja", role: "Operations Head", metric: "15", metricLabel: "Stores managed" },
     { company: "Green Grocers", industry: "FMCG", quote: "Voice invoicing in Tamil changed everything for our staff. Truly built for India.", person: "Lakshmi Narayanan", role: "Owner", metric: "3x", metricLabel: "Faster checkout" },
     { company: "TechMart India", industry: "Electronics", quote: "The AI predicted our Diwali demand perfectly. Zero stockouts for the first time.", person: "Amit Patel", role: "Director", metric: "94%", metricLabel: "Forecast accuracy" },
 ];

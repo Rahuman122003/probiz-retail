@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import PricingContent from "./PricingContent";
 
 export const metadata: Metadata = {
-    title: "Pricing — ProBiz Retail",
+    title: "Pricing — Probiz Retail",
     description: "Simple, transparent pricing. Start free, scale as you grow.",
 };
 

@@ -2,10 +2,10 @@
 import { motion } from "framer-motion";
 
 const articles = [
-    { pub: "Economic Times", date: "Mar 2025", title: "ProBiz raises Series B to bring AI-powered billing to every Indian business", excerpt: "The Bangalore-based startup has raised $12M to accelerate its AI-first approach to GST compliance and inventory management." },
-    { pub: "YourStory", date: "Jan 2025", title: "How ProBiz is using voice AI to simplify invoicing in regional languages", excerpt: "With support for 10+ Indian languages, ProBiz's voice invoicing feature is making technology accessible to non-English speaking business owners." },
-    { pub: "Inc42", date: "Nov 2024", title: "ProBiz crosses 10,000 business customers in under 18 months", excerpt: "The rapid growth highlights the demand for unified business management tools in India's MSME sector." },
-    { pub: "Mint", date: "Sep 2024", title: "AI in accounting: How Indian startups are automating GST compliance", excerpt: "ProBiz's AI engine can predict GST filing errors before they happen, saving businesses thousands in penalties." },
+    { pub: "Economic Times", date: "Mar 2025", title: "Probiz raises Series B to bring AI-powered billing to every Indian business", excerpt: "The Bangalore-based startup has raised $12M to accelerate its AI-first approach to GST compliance and inventory management." },
+    { pub: "YourStory", date: "Jan 2025", title: "How Probiz is using voice AI to simplify invoicing in regional languages", excerpt: "With support for 10+ Indian languages, Probiz's voice invoicing feature is making technology accessible to non-English speaking business owners." },
+    { pub: "Inc42", date: "Nov 2024", title: "Probiz crosses 10,000 business customers in under 18 months", excerpt: "The rapid growth highlights the demand for unified business management tools in India's MSME sector." },
+    { pub: "Mint", date: "Sep 2024", title: "AI in accounting: How Indian startups are automating GST compliance", excerpt: "Probiz's AI engine can predict GST filing errors before they happen, saving businesses thousands in penalties." },
 ];
 
 export default function PressContent() {

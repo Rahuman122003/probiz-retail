@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { Users, MessageSquare, Calendar, Award } from "lucide-react";
 
 const channels = [
-    { icon: MessageSquare, title: "Discussion Forum", desc: "Ask questions, share tips, and connect with other ProBiz users.", members: "8,400+", cta: "Join Forum" },
+    { icon: MessageSquare, title: "Discussion Forum", desc: "Ask questions, share tips, and connect with other Probiz users.", members: "8,400+", cta: "Join Forum" },
     { icon: Users, title: "WhatsApp Groups", desc: "Regional groups for local business owners to connect and collaborate.", members: "3,200+", cta: "Join Group" },
     { icon: Calendar, title: "Monthly Webinars", desc: "Live sessions with product updates, tips & tricks, and Q&A.", members: "500+ avg", cta: "Register" },
-    { icon: Award, title: "ProBiz Champions", desc: "Top users who help others and get early access to new features.", members: "120", cta: "Apply" },
+    { icon: Award, title: "Probiz Champions", desc: "Top users who help others and get early access to new features.", members: "120", cta: "Apply" },
 ];
 
 const stats = [

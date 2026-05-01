@@ -2,8 +2,8 @@
 import { motion } from "framer-motion";
 
 const quotes = [
-    { q: "ProBiz cut our billing time by 80%. The AI catches mistakes we'd never spot.", a: "Priya Sharma", r: "Founder, Sharma Textiles" },
-    { q: "We replaced four tools with ProBiz. Our accountant is finally happy.", a: "Rohan Mehta", r: "CEO, Mehta Electronics" },
+    { q: "Probiz Retail cut our billing time by 80%. The AI catches mistakes we'd never spot.", a: "Priya Sharma", r: "Founder, Sharma Textiles" },
+    { q: "We replaced four tools with Probiz Retail. Our accountant is finally happy.", a: "Rohan Mehta", r: "CEO, Mehta Electronics" },
     { q: "The forecasting alone has saved us ₹40 lakhs in dead stock this year.", a: "Anjali Verma", r: "COO, Verma Pharma" },
 ];
 

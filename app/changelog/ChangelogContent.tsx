@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 
 const entries = [
-    { version: "3.0", date: "Apr 2025", title: "ProBiz Retail 3.0", changes: ["Complete UI redesign with parallax effects", "AI Forecasting engine — 94% accuracy", "Voice invoicing in 10+ languages", "New mobile app for iOS and Android"] },
+    { version: "3.0", date: "Apr 2025", title: "Probiz Retail 3.0", changes: ["Complete UI redesign with parallax effects", "AI Forecasting engine — 94% accuracy", "Voice invoicing in 10+ languages", "New mobile app for iOS and Android"] },
     { version: "2.8", date: "Feb 2025", title: "Smart Alerts & OCR", changes: ["Expense OCR — snap receipts for auto-entry", "Smart notification system", "Improved multi-location sync", "Performance boost — 3x faster loading"] },
     { version: "2.5", date: "Nov 2024", title: "Enterprise Features", changes: ["SSO and RBAC support", "Custom API integrations", "Audit trail logging", "Dedicated account management"] },
     { version: "2.0", date: "Aug 2024", title: "Inventory Revolution", changes: ["Batch and expiry management", "Multi-warehouse support", "Automated reorder points", "Barcode scanner integration"] },

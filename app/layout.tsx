@@ -4,7 +4,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "ProBiz Retail — AI-Powered GST Billing, Accounting & Inventory",
+  title: "Probiz Retail — AI-Powered GST Billing, Accounting & Inventory",
   description: "Run your entire business with AI. GST billing, inventory, accounting — unified in one cinematic platform.",
 };
 

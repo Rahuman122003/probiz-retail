@@ -5,8 +5,8 @@ import Footer from "@/components/Footer";
 import CommunityContent from "./CommunityContent";
 
 export const metadata: Metadata = {
-    title: "Community — ProBiz Retail",
-    description: "Join the ProBiz community. Connect with 12,000+ business owners and share ideas.",
+    title: "Community — Probiz Retail",
+    description: "Join the Probiz community. Connect with 12,000+ business owners and share ideas.",
 };
 
 export default function CommunityPage() {

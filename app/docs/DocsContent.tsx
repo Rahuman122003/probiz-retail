@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { BookOpen, Code, Zap, Settings, Shield, HelpCircle } from "lucide-react";
 
 const sections = [
-    { icon: Zap, title: "Quick Start", desc: "Get up and running with ProBiz in under 5 minutes.", links: ["Create your first invoice", "Import products", "Set up GST details", "Invite team members"] },
+    { icon: Zap, title: "Quick Start", desc: "Get up and running with Probiz in under 5 minutes.", links: ["Create your first invoice", "Import products", "Set up GST details", "Invite team members"] },
     { icon: BookOpen, title: "Guides", desc: "Step-by-step guides for every feature.", links: ["Billing & invoicing", "Inventory management", "AI forecasting setup", "Multi-location config"] },
     { icon: Code, title: "API Reference", desc: "Build custom integrations with our REST API.", links: ["Authentication", "Invoices API", "Products API", "Webhooks"] },
-    { icon: Settings, title: "Configuration", desc: "Customize ProBiz for your business needs.", links: ["Tax configuration", "Invoice templates", "Email & WhatsApp setup", "User roles & permissions"] },
+    { icon: Settings, title: "Configuration", desc: "Customize Probiz for your business needs.", links: ["Tax configuration", "Invoice templates", "Email & WhatsApp setup", "User roles & permissions"] },
     { icon: Shield, title: "Security", desc: "Learn about our security practices.", links: ["Data encryption", "Compliance", "Backup & recovery", "Access controls"] },
     { icon: HelpCircle, title: "FAQ", desc: "Answers to commonly asked questions.", links: ["Billing FAQ", "Technical FAQ", "Migration FAQ", "Pricing FAQ"] },
 ];

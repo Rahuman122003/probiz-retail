@@ -7,7 +7,7 @@ export function MaskReveal({ children, delay = 0, className = "" }: { children: 
     const isInView = useInView(ref, { once: true, margin: "100px" });
     
     return (
-        <span ref={ref} className={`inline-block overflow-hidden align-bottom ${className}`}>
+        <span ref={ref} className={`inline-block overflow-hidden align-bottom pb-[0.15em] ${className}`}>
             <motion.span
                 className="inline-block"
                 initial={{ y: "110%" }}
@@ -28,7 +28,7 @@ export function WordReveal({ text, className = "", delay = 0 }: { text: string; 
     return (
         <span ref={ref} className={className}>
             {words.map((w, i) => (
-                <span key={i} className="inline-block overflow-hidden mr-[0.25em] align-bottom">
+                <span key={i} className="inline-block overflow-hidden mr-[0.25em] align-bottom pb-[0.15em]">
                     <motion.span
                         className="inline-block"
                         initial={{ y: "110%" }}

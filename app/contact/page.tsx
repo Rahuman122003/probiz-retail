@@ -4,8 +4,8 @@ import Footer from "@/components/Footer";
 import ContactContent from "./ContactContent";
 
 export const metadata: Metadata = {
-    title: "Contact — ProBiz Retail",
-    description: "Get in touch with ProBiz. Sales inquiries, support, or partnerships.",
+    title: "Contact — Probiz Retail",
+    description: "Get in touch with Probiz. Sales inquiries, support, or partnerships.",
 };
 
 export default function ContactPage() {

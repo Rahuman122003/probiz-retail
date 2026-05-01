@@ -2,6 +2,8 @@ import Hero from "@/components/Hero";
 import ScrollStory from "@/components/ScrollStory";
 import Features from "@/components/Features";
 import AISection from "@/components/AISection";
+import AICameraShowcase from "@/components/AICameraShowcase";
+import POSShowcase from "@/components/POSShowcase";
 import Timeline from "@/components/Timeline";
 import Dashboard from "@/components/Dashboard";
 import Testimonials from "@/components/Testimonials";
@@ -15,6 +17,8 @@ export default function Home() {
       <ScrollStory />
       <Features />
       <AISection />
+      <AICameraShowcase />
+      <POSShowcase />
       <Timeline />
       <Dashboard />
       <Testimonials />

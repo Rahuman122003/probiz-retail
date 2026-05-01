@@ -42,7 +42,7 @@ export default function AISection() {
                         <WordReveal text="at its core." delay={0.5} />
                     </h2>
                     <p className="mt-6 sm:mt-10 text-base sm:text-lg md:text-xl text-white/60 max-w-xl font-light tracking-tight">
-                        Every workflow is supercharged by ProBiz AI — quietly working behind the scenes, so you don&apos;t have to.
+                        Every workflow is supercharged by Probiz Retail AI — quietly working behind the scenes, so you don&apos;t have to.
                     </p>
                 </div>
 

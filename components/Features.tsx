@@ -6,7 +6,7 @@ import { WordReveal } from "./ui/TextReveal";
 const features = [
     { icon: FileCheck, title: "GST Billing", desc: "B2B & B2C invoicing with automatic tax handling and e-invoice integration." },
     { icon: Boxes, title: "Inventory Tracking", desc: "Live stock levels, low-stock alerts, and batch management built in." },
-    { icon: Brain, title: "AI Forecasting", desc: "Predict next month's sales with 94% accuracy using ProBiz AI." },
+    { icon: Brain, title: "AI Forecasting", desc: "Predict next month's sales with 94% accuracy using Probiz Retail AI." },
     { icon: ScanLine, title: "Expense OCR", desc: "Snap a receipt — we read, categorize, and reconcile it automatically." },
     { icon: ShieldAlert, title: "Fraud Detection", desc: "Catch unusual patterns in real-time before they cost you." },
     { icon: Mic, title: "Voice Invoicing", desc: "Say it — done. Create invoices entirely with your voice." },
@@ -16,9 +16,9 @@ export default function Features() {
     return (
         <section className="relative py-20 sm:py-32 md:py-48 bg-ink-50">
             <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
-                <div className="max-w-3xl mb-12 sm:mb-20">
+                <div className="max-w-3xl mb-12 sm:mb-20 overflow-visible">
                     <div className="text-[11px] uppercase tracking-[0.25em] text-ink-400 font-semibold mb-4 sm:mb-6">— Capabilities</div>
-                    <h2 className="font-display text-3xl sm:text-5xl md:text-7xl font-semibold tracking-ultra leading-[0.95]">
+                    <h2 className="font-display text-3xl sm:text-5xl md:text-7xl font-semibold tracking-ultra leading-[1.1] overflow-visible">
                         <WordReveal text="Everything you need." />
                         <br />
                         <span className="text-ink-400 font-light italic"><WordReveal text="Nothing you don't." delay={0.2} /></span>

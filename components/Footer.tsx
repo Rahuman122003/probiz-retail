@@ -3,9 +3,10 @@ import Link from "next/link";
 const footerLinks = [
     { h: "Product", l: [
         { label: "Features", href: "/features" },
+        { label: "AI Camera", href: "/ai-camera" },
+        { label: "POS", href: "/pos" },
         { label: "Pricing", href: "/pricing" },
         { label: "Integrations", href: "/integrations" },
-        { label: "Changelog", href: "/changelog" },
     ]},
     { h: "Company", l: [
         { label: "About", href: "/about" },
@@ -29,9 +30,9 @@ export default function Footer() {
                     <div className="col-span-2 sm:col-span-3 md:col-span-2">
                         <Link href="/" className="flex items-center gap-2 mb-4">
                             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent to-purple-600" />
-                            <span className="font-semibold text-white tracking-tight">ProBiz</span>
+                            <span className="font-semibold text-white tracking-tight">Probiz Retail</span>
                         </Link>
-                        <p className="text-sm max-w-xs leading-relaxed">AI-powered GST billing, accounting, and inventory — built for India&apos;s businesses.</p>
+                        <p className="text-sm max-w-xs leading-relaxed">AI-powered GST billing, accounting, and inventory — built for India&apos;s businesses by Probiz Retail.</p>
                     </div>
                     {footerLinks.map((c) => (
                         <div key={c.h}>
@@ -47,7 +48,7 @@ export default function Footer() {
                     ))}
                 </div>
                 <div className="mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-4 text-xs">
-                    <div>© 2025 ProBiz Retail Inc.</div>
+                    <div>© 2025 Probiz Retail Inc.</div>
                     <div className="flex gap-6">
                         <span className="hover:text-white transition-colors cursor-pointer">Privacy</span>
                         <span className="hover:text-white transition-colors cursor-pointer">Terms</span>

@@ -1,13 +1,15 @@
 "use client";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import { Receipt, Package, Users, BarChart3 } from "lucide-react";
+import { Receipt, Package, Users, BarChart3, Camera, ScanLine } from "lucide-react";
 
 const modules = [
     { icon: Receipt, title: "Billing", subtitle: "GST-compliant invoices in seconds.", desc: "Generate B2B & B2C invoices with auto-tax calculation, e-invoicing, and instant share via WhatsApp or email.", color: "from-blue-500 to-cyan-500" },
     { icon: Package, title: "Inventory", subtitle: "Stock that thinks for itself.", desc: "Real-time tracking, low-stock alerts, batch & expiry management — across unlimited locations.", color: "from-purple-500 to-pink-500" },
     { icon: Users, title: "CRM", subtitle: "Every customer, perfectly understood.", desc: "Unified profiles for customers and vendors. Loyalty, credit, and payment history at a glance.", color: "from-orange-500 to-red-500" },
     { icon: BarChart3, title: "Reports", subtitle: "Decisions backed by data.", desc: "Profit & loss, GSTR-ready statements, cash flow projections — exported in one tap.", color: "from-emerald-500 to-teal-500" },
+    { icon: Camera, title: "AI Camera", subtitle: "Eyes that never blink.", desc: "AI-powered surveillance detects theft in real-time — smart alerts, behavior analysis, and facial recognition across every aisle.", color: "from-red-500 to-rose-600" },
+    { icon: ScanLine, title: "POS", subtitle: "Checkout in 3 seconds flat.", desc: "Lightning-fast point of sale with barcode scanning, multi-payment support, GST receipts, and offline mode built in.", color: "from-indigo-500 to-violet-600" },
 ];
 
 /* ── Desktop: scroll-driven two-column layout ── */
@@ -136,7 +138,7 @@ function ModuleCard({ m, i, total, scrollYProgress }: { m: any, i: number, total
             <div className={`w-full h-full bg-gradient-to-br ${m.color} p-8 xl:p-10 flex flex-col justify-between`}>
                 <Icon size={48} strokeWidth={1.5} className="text-white" />
                 <div className="text-white">
-                    <div className="text-xs uppercase tracking-widest opacity-70">ProBiz</div>
+                    <div className="text-xs uppercase tracking-widest opacity-70">Probiz Retail</div>
                     <div className="text-3xl xl:text-4xl font-semibold tracking-tight mt-1">{m.title}</div>
                 </div>
             </div>

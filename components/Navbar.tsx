@@ -6,9 +6,9 @@ import { Menu, X } from "lucide-react";
 import Magnetic from "./ui/Magnetic";
 
 const navLinks = [
-    { label: "Product", href: "/features" },
     { label: "Features", href: "/features" },
-    { label: "AI", href: "/integrations" },
+    { label: "AI Camera", href: "/ai-camera" },
+    { label: "POS", href: "/pos" },
     { label: "Pricing", href: "/pricing" },
     { label: "Customers", href: "/customers" },
 ];
@@ -34,7 +34,7 @@ export default function Navbar() {
                 <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 h-16 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2">
                         <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent to-purple-600" />
-                        <span className="font-semibold tracking-tight text-ink-950">ProBiz</span>
+                        <span className="font-semibold tracking-tight text-ink-950">Probiz Retail</span>
                     </Link>
                     <ul className="hidden md:flex items-center gap-9 text-[13px] text-ink-600">
                         {navLinks.map((l) => (

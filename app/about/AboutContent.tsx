@@ -39,8 +39,8 @@ export default function AboutContent() {
                     <div className="max-w-3xl mx-auto mb-16 sm:mb-24">
                         <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-6">Our Story</h2>
                         <div className="space-y-4 text-base sm:text-lg text-ink-500 leading-relaxed font-light">
-                            <p>ProBiz started in 2023 with a simple observation: Indian businesses were using 4-5 different tools to manage billing, inventory, and accounting. Most of these tools didn&apos;t talk to each other.</p>
-                            <p>We built ProBiz to unify everything into one platform — and then supercharged it with AI. Today, over 12,000 businesses trust ProBiz to run their operations, from corner shops to enterprise chains.</p>
+                            <p>Probiz started in 2023 with a simple observation: Indian businesses were using 4-5 different tools to manage billing, inventory, and accounting. Most of these tools didn&apos;t talk to each other.</p>
+                            <p>We built Probiz to unify everything into one platform — and then supercharged it with AI. Today, over 12,000 businesses trust Probiz to run their operations, from corner shops to enterprise chains.</p>
                             <p>Our AI engine processes over ₹2,400 crores in invoices annually, predicts sales with 94% accuracy, and catches errors that humans miss. We&apos;re just getting started.</p>
                         </div>
                     </div>

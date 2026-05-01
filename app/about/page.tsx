@@ -5,8 +5,8 @@ import Footer from "@/components/Footer";
 import AboutContent from "./AboutContent";
 
 export const metadata: Metadata = {
-    title: "About — ProBiz Retail",
-    description: "Learn about ProBiz Retail — our mission, story, and the team building India's smartest business platform.",
+    title: "About — Probiz Retail",
+    description: "Learn about Probiz Retail — our mission, story, and the team building India's smartest business platform.",
 };
 
 export default function AboutPage() {

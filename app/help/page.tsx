@@ -5,8 +5,8 @@ import Footer from "@/components/Footer";
 import HelpContent from "./HelpContent";
 
 export const metadata: Metadata = {
-    title: "Help Center — ProBiz Retail",
-    description: "Get help with ProBiz. Search guides, contact support, or browse FAQs.",
+    title: "Help Center — Probiz Retail",
+    description: "Get help with Probiz. Search guides, contact support, or browse FAQs.",
 };
 
 export default function HelpPage() {

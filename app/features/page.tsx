@@ -5,8 +5,8 @@ import Footer from "@/components/Footer";
 import FeaturesContent from "./FeaturesContent";
 
 export const metadata: Metadata = {
-    title: "Features — ProBiz Retail",
-    description: "Explore all ProBiz features: GST billing, inventory tracking, AI forecasting, expense OCR, fraud detection, and voice invoicing.",
+    title: "Features — Probiz Retail",
+    description: "Explore all Probiz features: GST billing, inventory tracking, AI forecasting, expense OCR, fraud detection, and voice invoicing.",
 };
 
 export default function FeaturesPage() {
