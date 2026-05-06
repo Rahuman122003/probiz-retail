@@ -2,6 +2,7 @@
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import Magnetic from "./ui/Magnetic";
 
@@ -27,14 +28,24 @@ export default function Navbar() {
             <motion.nav
                 className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
                     scrolled
-                        ? "bg-white/70 backdrop-blur-xl backdrop-saturate-[180%] border-b border-black/5"
-                        : "bg-transparent border-b border-transparent"
+                        ? "bg-white/60 backdrop-blur-2xl backdrop-saturate-[180%] border-b border-white/40 shadow-[0_4px_30px_rgba(0,0,0,0.04)]"
+                        : "bg-white/30 backdrop-blur-xl backdrop-saturate-150 border-b border-white/20"
                 }`}
             >
                 <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 h-16 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent to-purple-600" />
-                        <span className="font-semibold tracking-tight text-ink-950">Probiz Retail</span>
+                    <Link href="/" className="flex items-center gap-2 shrink-0" aria-label="Probiz Retail">
+                        <Image
+                            src="/logo1.png"
+                            alt=""
+                            width={389}
+                            height={340}
+                            priority
+                            className="h-7 w-7 sm:h-8 sm:w-8 object-contain select-none"
+                        />
+                        <span className="font-quicksand font-bold text-base sm:text-lg tracking-tight leading-none select-none">
+                            <span style={{ color: "#1F9CE8" }}>Probiz</span>
+                            <span className="ml-1" style={{ color: "#7C3AED" }}>Retail</span>
+                        </span>
                     </Link>
                     <ul className="hidden md:flex items-center gap-9 text-[13px] text-ink-600">
                         {navLinks.map((l) => (

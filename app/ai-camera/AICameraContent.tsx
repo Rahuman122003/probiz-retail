@@ -1,7 +1,10 @@
 "use client";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Shield, Eye, Brain, Moon, Cloud, Store, AlertTriangle, Activity, Camera, Wifi } from "lucide-react";
+import { Shield, Eye, Brain, Moon, Cloud, Store, AlertTriangle, Activity, Camera, Wifi, User, ShoppingCart, Package } from "lucide-react";
 import { WordReveal } from "@/components/ui/TextReveal";
+import LearnMoreModal, { LearnMoreItem } from "@/components/ui/LearnMoreModal";
+import ThreatHeatmap from "./ThreatHeatmap";
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -19,13 +22,93 @@ const stats = [
     { metric: "24/7", label: "Always watching", title: "Uptime" },
 ];
 
-const features = [
-    { icon: AlertTriangle, title: "Smart Alerts", desc: "Instant push notifications to your phone and dashboard when suspicious activity is detected." },
-    { icon: Eye, title: "Facial Recognition", desc: "Identify known offenders and VIP customers. Maintain a watchlist synced across all your stores." },
-    { icon: Brain, title: "Behavior Analysis", desc: "AI learns normal patterns and flags anomalies — loitering, concealment, sweethearting, and more." },
-    { icon: Moon, title: "Night Vision AI", desc: "Crystal-clear detection even in low-light conditions. Our models are trained for all environments." },
-    { icon: Cloud, title: "Cloud Recording", desc: "30-day cloud storage with instant playback. Search footage by event, time, or person." },
-    { icon: Store, title: "Multi-Store Sync", desc: "Centralized monitoring across all locations. One dashboard, unlimited stores, zero blind spots." },
+type CamFeature = LearnMoreItem & { desc: string };
+
+const features: CamFeature[] = [
+    {
+        icon: AlertTriangle,
+        title: "Smart Alerts",
+        desc: "Instant push notifications to your phone and dashboard when suspicious activity is detected.",
+        tagline: "Notified before the loss.",
+        long: "Probiz AI Camera fires real-time alerts the instant something looks off — reaching your phone, dashboard, and security team in under 2 seconds with full context and a one-tap clip.",
+        highlights: [
+            "Sub-2-second alert latency",
+            "Push, SMS, WhatsApp & email channels",
+            "Severity-tiered routing & escalation",
+            "One-tap clip preview from the alert",
+            "Auto-mute false positives over time",
+        ],
+    },
+    {
+        icon: Eye,
+        title: "Facial Recognition",
+        desc: "Identify known offenders and VIP customers. Maintain a watchlist synced across all your stores.",
+        tagline: "Faces, instantly understood.",
+        long: "Recognise repeat offenders, blacklisted individuals, and your most valuable customers the moment they walk in — with privacy-respecting on-prem matching across every store.",
+        highlights: [
+            "Multi-store synced watchlists",
+            "VIP customer recognition & greetings",
+            "Repeat-offender flagging",
+            "On-device matching, encrypted at rest",
+            "Audit trail for every recognition event",
+        ],
+    },
+    {
+        icon: Brain,
+        title: "Behavior Analysis",
+        desc: "AI learns normal patterns and flags anomalies — loitering, concealment, sweethearting, and more.",
+        tagline: "Patterns that betray intent.",
+        long: "Our deep-learning model studies your store’s rhythms and surfaces the unusual — loitering near electronics, item concealment, sweethearting at checkout, and more — long before a human notices.",
+        highlights: [
+            "Loitering & dwell-time detection",
+            "Concealment & bag-stuffing alerts",
+            "Sweethearting at checkout flagging",
+            "Crowd density & queue analytics",
+            "Per-zone behaviour baselines",
+        ],
+    },
+    {
+        icon: Moon,
+        title: "Night Vision AI",
+        desc: "Crystal-clear detection even in low-light conditions. Our models are trained for all environments.",
+        tagline: "Darkness, no obstacle.",
+        long: "Models trained on millions of low-light frames keep detection accurate from dim backrooms to fully unlit aisles — no extra IR hardware required.",
+        highlights: [
+            "Works on standard CMOS sensors",
+            "Auto noise-reduction & contrast boost",
+            "IR camera support out-of-the-box",
+            "Same accuracy day and night",
+            "Adaptive to glare, headlights & flicker",
+        ],
+    },
+    {
+        icon: Cloud,
+        title: "Cloud Recording",
+        desc: "30-day cloud storage with instant playback. Search footage by event, time, or person.",
+        tagline: "Every second, retrievable.",
+        long: "Encrypted cloud archives keep 30 days of footage at your fingertips. Search by event type, person, zone, or timestamp and jump to the exact frame in seconds.",
+        highlights: [
+            "30-day rolling cloud retention",
+            "AI-powered footage search",
+            "Instant scrub & 4-camera grid replay",
+            "Encrypted at rest (AES-256)",
+            "Export incident clips with one click",
+        ],
+    },
+    {
+        icon: Store,
+        title: "Multi-Store Sync",
+        desc: "Centralized monitoring across all locations. One dashboard, unlimited stores, zero blind spots.",
+        tagline: "Every store. One pane of glass.",
+        long: "Run a single command centre across every branch — unified watchlists, cross-store alerts, role-based access, and centralised reporting on the entire footprint.",
+        highlights: [
+            "Unlimited stores on one dashboard",
+            "Cross-store watchlist syncing",
+            "Role-based access & granular audit",
+            "Aggregated incident analytics",
+            "SSO & multi-region failover ready",
+        ],
+    },
 ];
 
 const zones = ["Entrance", "Aisle 3", "Checkout", "Stockroom"];
@@ -38,6 +121,7 @@ const steps = [
 ];
 
 export default function AICameraContent() {
+    const [active, setActive] = useState<number | null>(null);
     return (
         <>
             {/* ── Live Camera Grid ── */}
@@ -57,49 +141,7 @@ export default function AICameraContent() {
                         {/* Camera Grid */}
                         <div className="lg:col-span-2 grid grid-cols-2 gap-3">
                             {zones.map((zone, i) => (
-                                <motion.div
-                                    key={zone}
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.8, delay: i * 0.1, ease }}
-                                    className="relative aspect-video rounded-xl sm:rounded-2xl bg-ink-900 border border-white/5 overflow-hidden group"
-                                >
-                                    {/* Scan line animation */}
-                                    <motion.div
-                                        className="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent z-10"
-                                        animate={{ top: ["0%", "100%", "0%"] }}
-                                        transition={{ duration: 4 + i, repeat: Infinity, ease: "linear" }}
-                                    />
-                                    {/* Simulated camera feed bg */}
-                                    <div className={`absolute inset-0 bg-gradient-to-br ${zoneColors[i]} to-transparent opacity-20`} />
-                                    <div className="absolute inset-0" style={{
-                                        backgroundImage: "radial-gradient(circle at 30% 40%, rgba(255,255,255,0.03) 0%, transparent 60%), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.02) 0%, transparent 50%)"
-                                    }} />
-
-                                    {/* AI bounding box */}
-                                    <motion.div
-                                        initial={{ opacity: 0 }}
-                                        whileInView={{ opacity: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 1.5 + i * 0.3, duration: 0.5 }}
-                                        className="absolute top-[25%] left-[30%] w-[25%] h-[40%] border-2 border-emerald-400/70 rounded-sm"
-                                    >
-                                        <div className="absolute -top-5 left-0 bg-emerald-500/90 text-white text-[8px] sm:text-[9px] px-1.5 py-0.5 rounded font-medium">
-                                            Person • 98%
-                                        </div>
-                                    </motion.div>
-
-                                    {/* LIVE badge */}
-                                    <div className="absolute top-2 sm:top-3 left-2 sm:left-3 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm px-2 py-1 rounded-md">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                                        <span className="text-[9px] sm:text-[10px] font-semibold text-white/90 tracking-wide">LIVE</span>
-                                    </div>
-                                    {/* Zone label */}
-                                    <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 text-[10px] sm:text-xs text-white/60 font-medium">{zone}</div>
-                                    {/* Camera ID */}
-                                    <div className="absolute bottom-2 sm:bottom-3 right-2 sm:right-3 text-[9px] text-white/30 font-mono">CAM-{String(i + 1).padStart(2, "0")}</div>
-                                </motion.div>
+                                <BigCameraFeed key={zone} zone={zone} index={i} bg={zoneColors[i]} />
                             ))}
                         </div>
 
@@ -175,74 +217,7 @@ export default function AICameraContent() {
             </section>
 
             {/* ── Threat Heatmap ── */}
-            <section className="relative py-16 sm:py-24 bg-ink-950 overflow-hidden">
-                <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
-                    <div className="text-[11px] uppercase tracking-[0.25em] text-white/40 font-semibold mb-4 sm:mb-6">— Threat Analysis</div>
-                    <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-semibold tracking-ultra leading-[0.95] text-white mb-12 sm:mb-16">
-                        <WordReveal text="Know your" />{" "}
-                        <span className="italic font-light text-gradient-accent"><WordReveal text="hotspots." delay={0.3} /></span>
-                    </h2>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, ease }}
-                        className="relative aspect-[16/9] sm:aspect-[2/1] rounded-2xl sm:rounded-3xl border border-white/10 bg-ink-900/50 overflow-hidden"
-                    >
-                        {/* Store floor plan grid */}
-                        <div className="absolute inset-0 opacity-30" style={{
-                            backgroundImage: "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
-                            backgroundSize: "50px 50px"
-                        }} />
-
-                        {/* Hotspots */}
-                        {[
-                            { top: "20%", left: "15%", size: "180px", color: "rgba(239,68,68,0.4)", label: "Entrance", risk: "High" },
-                            { top: "40%", left: "45%", size: "220px", color: "rgba(245,158,11,0.35)", label: "Electronics", risk: "Medium" },
-                            { top: "60%", left: "75%", size: "160px", color: "rgba(239,68,68,0.45)", label: "Checkout", risk: "High" },
-                            { top: "30%", left: "70%", size: "120px", color: "rgba(59,130,246,0.25)", label: "Apparel", risk: "Low" },
-                        ].map((spot, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, scale: 0 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 1.2, delay: 0.5 + i * 0.2, ease }}
-                                className="absolute -translate-x-1/2 -translate-y-1/2 group cursor-pointer"
-                                style={{ top: spot.top, left: spot.left }}
-                            >
-                                <motion.div
-                                    animate={{ scale: [1, 1.2, 1], opacity: [0.6, 1, 0.6] }}
-                                    transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
-                                    className="rounded-full blur-2xl"
-                                    style={{ width: spot.size, height: spot.size, background: `radial-gradient(circle, ${spot.color}, transparent 70%)` }}
-                                />
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-sm px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                                    <div className="text-[10px] sm:text-xs font-semibold text-white">{spot.label}</div>
-                                    <div className="text-[9px] text-white/50">Risk: {spot.risk}</div>
-                                </div>
-                                {/* Center dot */}
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white/80" />
-                            </motion.div>
-                        ))}
-
-                        {/* Legend */}
-                        <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 flex items-center gap-4 bg-black/40 backdrop-blur-sm px-3 py-2 rounded-lg">
-                            {[
-                                { color: "bg-red-500", label: "High Risk" },
-                                { color: "bg-amber-500", label: "Medium" },
-                                { color: "bg-blue-500", label: "Low" },
-                            ].map((l, i) => (
-                                <div key={i} className="flex items-center gap-1.5">
-                                    <span className={`w-2 h-2 rounded-full ${l.color}`} />
-                                    <span className="text-[9px] sm:text-[10px] text-white/60">{l.label}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
+            <ThreatHeatmap />
 
             {/* ── Feature Grid ── */}
             <section className="relative py-16 sm:py-24 bg-ink-950 border-t border-white/5">
@@ -258,13 +233,15 @@ export default function AICameraContent() {
                         {features.map((f, i) => {
                             const Icon = f.icon;
                             return (
-                                <motion.div
+                                <motion.button
+                                    type="button"
+                                    onClick={() => setActive(i)}
                                     key={i}
                                     initial={{ opacity: 0, y: 30 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, margin: "-10%" }}
                                     transition={{ duration: 0.8, delay: i * 0.07, ease }}
-                                    className="group relative bg-ink-950 p-6 sm:p-8 lg:p-10 overflow-hidden cursor-pointer"
+                                    className="group relative bg-ink-950 p-6 sm:p-8 lg:p-10 overflow-hidden cursor-pointer text-left w-full"
                                 >
                                     <motion.div
                                         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
@@ -274,12 +251,12 @@ export default function AICameraContent() {
                                         <Icon size={24} strokeWidth={1.5} className="text-white mb-6 sm:mb-8 transition-transform duration-500 group-hover:-translate-y-1 group-hover:text-accent" />
                                         <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-white mb-2 sm:mb-3">{f.title}</h3>
                                         <p className="text-sm text-white/40 leading-relaxed">{f.desc}</p>
-                                        <div className="mt-6 sm:mt-8 flex items-center gap-2 text-[12px] font-medium text-white/40 group-hover:text-accent transition-colors">
+                                        <div className="mt-6 sm:mt-8 inline-flex items-center gap-2 text-[12px] font-medium text-white/40 group-hover:text-accent transition-colors">
                                             Learn more
                                             <span className="transition-transform group-hover:translate-x-1">→</span>
                                         </div>
                                     </div>
-                                </motion.div>
+                                </motion.button>
                             );
                         })}
                     </div>
@@ -325,6 +302,146 @@ export default function AICameraContent() {
                     </div>
                 </div>
             </section>
+
+            <LearnMoreModal
+                item={active !== null ? features[active] : null}
+                onClose={() => setActive(null)}
+                theme="dark"
+            />
         </>
     );
+}
+
+/* ── Mind-blowing live camera feed ── */
+function BigCameraFeed({ zone, index, bg }: { zone: string; index: number; bg: string }) {
+    const detectionPalettes = [
+        { border: "border-emerald-400/70", bg: "bg-emerald-400/10", text: "text-emerald-300", dot: "bg-emerald-400" },
+        { border: "border-amber-400/70", bg: "bg-amber-400/10", text: "text-amber-300", dot: "bg-amber-400" },
+        { border: "border-sky-400/70", bg: "bg-sky-400/10", text: "text-sky-300", dot: "bg-sky-400" },
+        { border: "border-rose-400/70", bg: "bg-rose-400/10", text: "text-rose-300", dot: "bg-rose-400" },
+    ];
+    const objects: Array<{ icon: typeof User; label: string; conf: number; top: string; left: string; w: string; h: string; pal: typeof detectionPalettes[number]; delay: number }>[] = [
+        // Entrance
+        [
+            { icon: User, label: "Person", conf: 98, top: "22%", left: "32%", w: "22%", h: "55%", pal: detectionPalettes[0], delay: 0.6 },
+            { icon: User, label: "Person", conf: 93, top: "30%", left: "62%", w: "20%", h: "48%", pal: detectionPalettes[0], delay: 1.4 },
+        ],
+        // Aisle 3
+        [
+            { icon: User, label: "Loitering", conf: 87, top: "30%", left: "38%", w: "24%", h: "50%", pal: detectionPalettes[1], delay: 0.9 },
+        ],
+        // Checkout
+        [
+            { icon: ShoppingCart, label: "Cart", conf: 99, top: "45%", left: "18%", w: "32%", h: "40%", pal: detectionPalettes[2], delay: 0.8 },
+            { icon: User, label: "Cashier", conf: 96, top: "22%", left: "60%", w: "22%", h: "55%", pal: detectionPalettes[2], delay: 1.5 },
+        ],
+        // Stockroom
+        [
+            { icon: Package, label: "Motion", conf: 76, top: "35%", left: "30%", w: "40%", h: "45%", pal: detectionPalettes[3], delay: 0.7 },
+        ],
+    ];
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: index * 0.1, ease }}
+            className="relative aspect-video rounded-xl sm:rounded-2xl bg-ink-900 border border-white/5 overflow-hidden group"
+        >
+            {/* Animated grain */}
+            <motion.div
+                className="absolute inset-0 opacity-[0.07] pointer-events-none"
+                style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.4) 1px, transparent 1px)", backgroundSize: "3px 3px" }}
+                animate={{ backgroundPosition: ["0 0", "3px 3px"] }}
+                transition={{ duration: 0.4, repeat: Infinity, ease: "linear" }}
+            />
+
+            {/* Scan line */}
+            <motion.div
+                className="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent z-10"
+                animate={{ top: ["0%", "100%", "0%"] }}
+                transition={{ duration: 4 + index * 0.7, repeat: Infinity, ease: "linear" }}
+            />
+
+            {/* Color tint */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${bg} to-transparent opacity-25`} />
+            <div className="absolute inset-0" style={{
+                backgroundImage: "radial-gradient(circle at 30% 40%, rgba(255,255,255,0.04) 0%, transparent 60%), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.03) 0%, transparent 50%)"
+            }} />
+
+            {/* Crosshair corner brackets */}
+            {["top-2 left-2", "top-2 right-2", "bottom-2 left-2", "bottom-2 right-2"].map((pos, i) => (
+                <motion.div
+                    key={i}
+                    className={`absolute ${pos} w-3 h-3 border-white/30`}
+                    style={{
+                        borderTopWidth: pos.includes("top") ? 1 : 0,
+                        borderBottomWidth: pos.includes("bottom") ? 1 : 0,
+                        borderLeftWidth: pos.includes("left") ? 1 : 0,
+                        borderRightWidth: pos.includes("right") ? 1 : 0,
+                    }}
+                    animate={{ opacity: [0.3, 0.9, 0.3] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+                />
+            ))}
+
+            {/* Detection boxes */}
+            {objects[index]?.map((o, i) => {
+                const OIcon = o.icon;
+                return (
+                    <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 1.2 + o.delay, duration: 0.5, ease }}
+                        className={`absolute border-2 ${o.pal.border} ${o.pal.bg} rounded-sm`}
+                        style={{ top: o.top, left: o.left, width: o.w, height: o.h }}
+                    >
+                        <motion.div
+                            animate={{ opacity: [0.6, 1, 0.6] }}
+                            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                            className={`absolute -top-5 left-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm bg-black/70 ${o.pal.text} text-[8px] sm:text-[9px] font-semibold whitespace-nowrap`}
+                        >
+                            <OIcon size={9} strokeWidth={2.2} />
+                            {o.label} · {o.conf}%
+                        </motion.div>
+                    </motion.div>
+                );
+            })}
+
+            {/* LIVE badge with ping */}
+            <div className="absolute top-2 sm:top-3 left-2 sm:left-3 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm px-2 py-1 rounded-md">
+                <span className="relative flex w-1.5 h-1.5">
+                    <span className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-75" />
+                    <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-red-500" />
+                </span>
+                <span className="text-[9px] sm:text-[10px] font-semibold text-white/90 tracking-wider">LIVE</span>
+            </div>
+
+            {/* Live timestamp */}
+            <Timestamp />
+
+            {/* Zone label */}
+            <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 text-[10px] sm:text-xs text-white/60 font-medium">{zone}</div>
+            {/* Camera ID */}
+            <div className="absolute bottom-2 sm:bottom-3 right-2 sm:right-3 text-[9px] text-white/30 font-mono">CAM-{String(index + 1).padStart(2, "0")}</div>
+        </motion.div>
+    );
+}
+
+function Timestamp() {
+    const [time, setTime] = useState("");
+    useEffect(() => {
+        const fmt = () => {
+            const d = new Date();
+            const pad = (n: number) => String(n).padStart(2, "0");
+            setTime(`${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`);
+        };
+        fmt();
+        const t = setInterval(fmt, 1000);
+        return () => clearInterval(t);
+    }, []);
+    return <div className="absolute top-2 sm:top-3 right-2 sm:right-3 text-[9px] sm:text-[10px] font-mono text-white/50 tabular-nums bg-black/40 backdrop-blur-sm px-1.5 py-0.5 rounded">{time}</div>;
 }

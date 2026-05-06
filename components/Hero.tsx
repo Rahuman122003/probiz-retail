@@ -1,6 +1,7 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 import { WordReveal, MaskReveal } from "./ui/TextReveal";
 import Magnetic from "./ui/Magnetic";
 import { TrendingUp, Sparkles, ShoppingCart, Camera, Receipt, BarChart3, Package, Users, Bell, Search } from "lucide-react";
@@ -35,8 +36,9 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass text-[11px] sm:text-[12px] font-medium text-ink-600 mb-8 sm:mb-10"
                 >
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <Image src="/logo1.png" alt="" width={389} height={340} className="w-4 h-4 object-contain" />
                     Introducing Probiz Retail 3.0
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 </motion.div>
 
                 <h1 className="font-display font-semibold tracking-ultra text-[11vw] sm:text-[8.5vw] lg:text-[7.5vw] leading-[0.92] text-ink-950">
@@ -115,7 +117,7 @@ export default function Hero() {
                         {/* Sidebar — desktop only */}
                         <div className="hidden lg:flex flex-col w-44 border-r border-ink-100 bg-ink-50/50 p-3 gap-0.5">
                             <div className="flex items-center gap-2 mb-4 px-2">
-                                <div className="w-6 h-6 rounded-md bg-gradient-to-br from-accent to-purple-600" />
+                                <Image src="/logo1.png" alt="" width={389} height={340} className="w-6 h-6 object-contain" />
                                 <span className="text-xs font-semibold text-ink-800">Probiz Retail</span>
                             </div>
                             {[

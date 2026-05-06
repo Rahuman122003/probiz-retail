@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { WordReveal } from "./ui/TextReveal";
 import Magnetic from "./ui/Magnetic";
 
@@ -13,6 +14,18 @@ export default function CTA() {
                 style={{ background: "conic-gradient(from 0deg, #0066ff, #8b5cf6, #ec4899, #0066ff)" }}
             />
             <div className="relative max-w-5xl mx-auto px-5 sm:px-6 text-center">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    className="flex justify-center mb-8 sm:mb-10"
+                >
+                    <div className="relative">
+                        <div className="absolute inset-0 blur-2xl opacity-60 bg-gradient-to-br from-accent to-purple-500" />
+                        <Image src="/logo1.png" alt="Probiz Retail" width={389} height={340} className="relative w-14 h-14 sm:w-16 sm:h-16 object-contain" />
+                    </div>
+                </motion.div>
                 <h2 className="font-display text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-semibold tracking-ultra leading-[0.92]">
                     <WordReveal text="Start scaling" />
                     <br />

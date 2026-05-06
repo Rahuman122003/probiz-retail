@@ -1,6 +1,7 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 import { WordReveal } from "./ui/TextReveal";
 
 interface PageHeroProps {
@@ -32,7 +33,7 @@ export default function PageHero({ label, title, titleAccent, description }: Pag
                     transition={{ duration: 0.8 }}
                     className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass text-[11px] sm:text-[12px] font-medium text-ink-600 mb-6 sm:mb-8"
                 >
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                    <Image src="/logo1.png" alt="" width={389} height={340} className="w-4 h-4 object-contain" />
                     {label}
                 </motion.div>
                 <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-ultra leading-[0.92] text-ink-950">

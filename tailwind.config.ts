@@ -7,6 +7,7 @@ const config: Config = {
             fontFamily: {
                 sans: ["Inter", "system-ui", "sans-serif"],
                 display: ["'SF Pro Display'", "Inter", "sans-serif"],
+                quicksand: ["Quicksand", "Inter", "sans-serif"],
             },
             colors: {
                 ink: {

@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Magnetic from "./ui/Magnetic";
 import Link from "next/link";
 
@@ -13,6 +14,18 @@ export default function PageCTA() {
                 style={{ background: "conic-gradient(from 0deg, #0066ff, #8b5cf6, #ec4899, #0066ff)" }}
             />
             <div className="relative max-w-3xl mx-auto px-5 sm:px-6 text-center">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.85 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.7 }}
+                    className="flex justify-center mb-6 sm:mb-8"
+                >
+                    <div className="relative">
+                        <div className="absolute inset-0 blur-2xl opacity-60 bg-gradient-to-br from-accent to-purple-500" />
+                        <Image src="/logo1.png" alt="Probiz Retail" width={389} height={340} className="relative w-12 h-12 sm:w-14 sm:h-14 object-contain" />
+                    </div>
+                </motion.div>
                 <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-semibold tracking-ultra leading-[0.95]">
                     Ready to get started?
                 </h2>

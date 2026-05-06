@@ -1,15 +1,16 @@
 "use client";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import Image from "next/image";
 import { Receipt, Package, Users, BarChart3, Camera, ScanLine } from "lucide-react";
 
 const modules = [
-    { icon: Receipt, title: "Billing", subtitle: "GST-compliant invoices in seconds.", desc: "Generate B2B & B2C invoices with auto-tax calculation, e-invoicing, and instant share via WhatsApp or email.", color: "from-blue-500 to-cyan-500" },
-    { icon: Package, title: "Inventory", subtitle: "Stock that thinks for itself.", desc: "Real-time tracking, low-stock alerts, batch & expiry management — across unlimited locations.", color: "from-purple-500 to-pink-500" },
-    { icon: Users, title: "CRM", subtitle: "Every customer, perfectly understood.", desc: "Unified profiles for customers and vendors. Loyalty, credit, and payment history at a glance.", color: "from-orange-500 to-red-500" },
-    { icon: BarChart3, title: "Reports", subtitle: "Decisions backed by data.", desc: "Profit & loss, GSTR-ready statements, cash flow projections — exported in one tap.", color: "from-emerald-500 to-teal-500" },
-    { icon: Camera, title: "AI Camera", subtitle: "Eyes that never blink.", desc: "AI-powered surveillance detects theft in real-time — smart alerts, behavior analysis, and facial recognition across every aisle.", color: "from-red-500 to-rose-600" },
-    { icon: ScanLine, title: "POS", subtitle: "Checkout in 3 seconds flat.", desc: "Lightning-fast point of sale with barcode scanning, multi-payment support, GST receipts, and offline mode built in.", color: "from-indigo-500 to-violet-600" },
+    { icon: Receipt, title: "Billing", subtitle: "GST-compliant invoices in seconds.", desc: "Generate B2B & B2C invoices with auto-tax calculation, e-invoicing, and instant share via WhatsApp or email.", color: "from-blue-500 to-cyan-500", image: "/billing.jpeg" },
+    { icon: Package, title: "Inventory", subtitle: "Stock that thinks for itself.", desc: "Real-time tracking, low-stock alerts, batch & expiry management — across unlimited locations.", color: "from-purple-500 to-pink-500", image: "/inventory.jpeg" },
+    { icon: Users, title: "CRM", subtitle: "Every customer, perfectly understood.", desc: "Unified profiles for customers and vendors. Loyalty, credit, and payment history at a glance.", color: "from-orange-500 to-red-500", image: "/crm.jpeg" },
+    { icon: BarChart3, title: "Reports", subtitle: "Decisions backed by data.", desc: "Profit & loss, GSTR-ready statements, cash flow projections — exported in one tap.", color: "from-emerald-500 to-teal-500", image: "/report.jpeg" },
+    { icon: Camera, title: "AI Camera", subtitle: "Eyes that never blink.", desc: "AI-powered surveillance detects theft in real-time — smart alerts, behavior analysis, and facial recognition across every aisle.", color: "from-red-500 to-rose-600", image: "/aicamera.png" },
+    { icon: ScanLine, title: "POS", subtitle: "Checkout in 3 seconds flat.", desc: "Lightning-fast point of sale with barcode scanning, multi-payment support, GST receipts, and offline mode built in.", color: "from-indigo-500 to-violet-600", image: "/pos.jpeg" },
 ];
 
 /* ── Desktop: scroll-driven two-column layout ── */
@@ -63,9 +64,13 @@ function MobileScrollStory() {
                             transition={{ duration: 0.7, delay: i * 0.08 }}
                             className="rounded-3xl overflow-hidden border border-ink-100 bg-white"
                         >
-                            <div className={`bg-gradient-to-br ${m.color} p-6 sm:p-8`}>
-                                <Icon size={32} strokeWidth={1.5} className="text-white mb-4" />
-                                <div className="text-white text-2xl sm:text-3xl font-semibold tracking-tight">{m.title}</div>
+                            <div className="relative h-56 sm:h-64 overflow-hidden">
+                                <Image src={m.image} alt={m.title} fill sizes="(max-width: 640px) 100vw, 600px" className="object-cover" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                                <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between">
+                                    <Icon size={32} strokeWidth={1.5} className="text-white drop-shadow" />
+                                    <div className="text-white text-2xl sm:text-3xl font-semibold tracking-tight drop-shadow">{m.title}</div>
+                                </div>
                             </div>
                             <div className="p-6 sm:p-8">
                                 <p className="text-lg font-light text-ink-700 mb-2">{m.subtitle}</p>
@@ -133,12 +138,14 @@ function ModuleCard({ m, i, total, scrollYProgress }: { m: any, i: number, total
     return (
         <motion.div
             style={{ opacity, scale }}
-            className="absolute w-full max-w-sm xl:max-w-md aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl shadow-ink-950/10"
+            className="absolute w-full max-w-sm xl:max-w-md aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl shadow-ink-950/20"
         >
-            <div className={`w-full h-full bg-gradient-to-br ${m.color} p-8 xl:p-10 flex flex-col justify-between`}>
-                <Icon size={48} strokeWidth={1.5} className="text-white" />
-                <div className="text-white">
-                    <div className="text-xs uppercase tracking-widest opacity-70">Probiz Retail</div>
+            <Image src={m.image} alt={m.title} fill sizes="(min-width: 1280px) 28rem, 24rem" className="object-cover" priority={i === 0} />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
+            <div className="relative w-full h-full p-8 xl:p-10 flex flex-col justify-between">
+                <Icon size={48} strokeWidth={1.5} className="text-white drop-shadow-lg" />
+                <div className="text-white drop-shadow-lg">
+                    <div className="text-xs uppercase tracking-widest opacity-80">Probiz Retail</div>
                     <div className="text-3xl xl:text-4xl font-semibold tracking-tight mt-1">{m.title}</div>
                 </div>
             </div>
