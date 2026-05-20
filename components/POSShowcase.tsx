@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
 import { CreditCard, Smartphone, Zap, Wifi, Check } from "lucide-react";
 import Image from "next/image";
@@ -131,7 +131,13 @@ function POSScene({ progress }: { progress: MotionValue<number> }) {
     const terminalY = useTransform(progress, [0, 0.5, 1], [0, -6, -12]);
 
     return (
-        <div className="relative w-full max-w-[440px]" style={{ height: "min(78vh, 720px)", perspective: 1200 }}>
+        <div
+            className="relative w-full max-w-[440px]"
+            style={{ height: "min(78vh, 720px)", perspective: 1400 }}
+        >
+            {/* Floating ambient particles */}
+            <FloatingParticles />
+
             {/* Receipt — behind the terminal */}
             <motion.div
                 style={{ height: receiptHeight, opacity: receiptOpacity }}
@@ -185,6 +191,18 @@ function Terminal({
                 <div className="absolute inset-0" style={{
                     backgroundImage: "radial-gradient(circle at 80% 20%, rgba(255,255,255,0.25), transparent 50%), radial-gradient(circle at 20% 80%, rgba(0,0,0,0.25), transparent 50%)"
                 }} />
+                {/* Hologram sheen */}
+                <motion.div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                        background: "linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.7) 45%, rgba(180,220,255,0.5) 55%, transparent 70%)",
+                        mixBlendMode: "overlay",
+                    }}
+                    animate={{ x: ["-130%", "130%"] }}
+                    transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", repeatDelay: 0.6 }}
+                />
+                {/* Iridescent border */}
+                <div className="absolute inset-0 rounded-xl pointer-events-none" style={{ boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.25), inset 0 -8px 20px rgba(0,0,0,0.25)" }} />
                 {/* Chip */}
                 <div className="absolute top-3 left-3 w-7 h-5 sm:w-8 sm:h-6 rounded-[3px] bg-gradient-to-br from-yellow-200 to-yellow-500 shadow-inner" />
                 {/* Wifi (contactless) */}
@@ -219,15 +237,32 @@ function Terminal({
                             <span className="ml-0.5" style={{ color: "#A78BFA" }}>POS</span>
                         </span>
                     </div>
+                    {/* Pulsing LED status row */}
                     <div className="flex items-center gap-1">
-                        {[...Array(4)].map((_, i) => (
-                            <span key={i} className="w-1 h-1 rounded-full bg-white/20" />
+                        {["#22c55e", "#0066ff", "#a78bfa", "#f59e0b"].map((c, i) => (
+                            <motion.span
+                                key={i}
+                                className="w-1 h-1 rounded-full"
+                                style={{ background: c, boxShadow: `0 0 6px ${c}` }}
+                                animate={{ opacity: [0.3, 1, 0.3] }}
+                                transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.18, ease: "easeInOut" }}
+                            />
                         ))}
                     </div>
                 </div>
 
+                {/* NFC contactless ripples — show during awaiting stage */}
+                <NFCWaves screenStage={screenStage} />
+
                 {/* Screen */}
                 <div className="relative rounded-2xl bg-white overflow-hidden border border-ink-100" style={{ aspectRatio: "1 / 0.85" }}>
+                    {/* Diagonal screen glare sweep */}
+                    <motion.div
+                        className="absolute inset-0 pointer-events-none z-20"
+                        style={{ background: "linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.55) 50%, transparent 65%)", mixBlendMode: "overlay" }}
+                        animate={{ x: ["-120%", "120%"] }}
+                        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", repeatDelay: 2 }}
+                    />
                     {/* Status bar */}
                     <div className="flex items-center justify-between px-3 py-1.5 text-[8px] font-mono text-ink-400 border-b border-ink-100">
                         <span>PROBIZ POS</span>
@@ -284,6 +319,8 @@ function Terminal({
                         </motion.div>
                         <motion.div style={{ opacity: approvedOpacity }} className="mt-2 text-sm font-semibold text-emerald-700">Approved</motion.div>
                         <motion.div style={{ opacity: approvedOpacity }} className="text-[9px] text-ink-400 mt-0.5">₹{TOTAL.toLocaleString("en-IN")} · CARD ••9012</motion.div>
+                        {/* Spark burst */}
+                        <ApprovedBurst trigger={approvedScale} />
                     </motion.div>
                 </div>
 
@@ -449,6 +486,78 @@ function Receipt({ progress }: { progress: MotionValue<number> }) {
                 backgroundPosition: "0 4px",
             }} />
         </motion.div>
+    );
+}
+
+/* ─────────── NFC contactless ripple waves ─────────── */
+function NFCWaves({ screenStage }: { screenStage: MotionValue<number> }) {
+    const opacity = useTransform(screenStage, (v) => (v === 0 ? 1 : 0));
+    return (
+        <motion.div style={{ opacity }} className="absolute -top-2 right-2 z-20 pointer-events-none">
+            {[0, 1, 2].map((i) => (
+                <motion.span
+                    key={i}
+                    className="absolute right-0 top-0 w-3 h-3 rounded-full border border-accent"
+                    animate={{ scale: [1, 2.4], opacity: [0.7, 0] }}
+                    transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.6, ease: "easeOut" }}
+                />
+            ))}
+            <span className="absolute right-0 top-0 w-3 h-3 rounded-full bg-accent/80 shadow-[0_0_8px_#0066ff]" />
+        </motion.div>
+    );
+}
+
+/* ─────────── Approval spark burst ─────────── */
+function ApprovedBurst({ trigger }: { trigger: MotionValue<number> }) {
+    const [active, setActive] = useState(false);
+    useEffect(() => {
+        const unsub = trigger.on("change", (v) => setActive(v > 0.5));
+        return () => unsub();
+    }, [trigger]);
+    if (!active) return null;
+    return (
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+            {[...Array(12)].map((_, i) => {
+                const angle = (i / 12) * Math.PI * 2;
+                const dx = Math.cos(angle) * 36;
+                const dy = Math.sin(angle) * 36;
+                return (
+                    <motion.span
+                        key={i}
+                        className="absolute w-1 h-1 rounded-full"
+                        style={{ background: i % 2 ? "#10b981" : "#0066ff" }}
+                        initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+                        animate={{ x: dx, y: dy, opacity: 0, scale: 0.4 }}
+                        transition={{ duration: 0.9, ease: "easeOut" }}
+                    />
+                );
+            })}
+        </div>
+    );
+}
+
+/* ─────────── Floating ambient particles around terminal ─────────── */
+function FloatingParticles() {
+    const particles = [
+        { x: "10%", y: "20%", d: 8, c: "#0066ff" },
+        { x: "85%", y: "15%", d: 6, c: "#a78bfa" },
+        { x: "15%", y: "75%", d: 5, c: "#ec4899" },
+        { x: "90%", y: "60%", d: 7, c: "#0066ff" },
+        { x: "50%", y: "5%", d: 4, c: "#10b981" },
+        { x: "5%", y: "45%", d: 5, c: "#a78bfa" },
+    ];
+    return (
+        <div className="absolute inset-0 pointer-events-none">
+            {particles.map((p, i) => (
+                <motion.span
+                    key={i}
+                    className="absolute rounded-full blur-[1px]"
+                    style={{ left: p.x, top: p.y, width: p.d, height: p.d, background: p.c, opacity: 0.4 }}
+                    animate={{ y: [0, -18, 0], opacity: [0.2, 0.6, 0.2] }}
+                    transition={{ duration: 4 + i * 0.3, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
+                />
+            ))}
+        </div>
     );
 }
 

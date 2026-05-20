@@ -42,7 +42,7 @@ export default function Hero() {
                 </motion.div>
 
                 <h1 className="font-display font-semibold tracking-ultra text-[11vw] sm:text-[8.5vw] lg:text-[7.5vw] leading-[0.92] text-ink-950">
-                    <span className="block"><WordReveal text="Run your entire" /></span>
+                    <span className="block"><WordReveal text="Run your entire Retail" /></span>
                     <span className="block">
                         <WordReveal text="business with" delay={0.3} />{" "}
                         <span className="italic font-light text-gradient-accent">

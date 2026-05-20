@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Shield, Eye, Brain, Moon, Cloud, Store, AlertTriangle, Activity, Camera, Wifi, User, ShoppingCart, Package } from "lucide-react";
+import { Shield, Eye, Brain, Moon, Cloud, Store, AlertTriangle, Activity, Camera, Wifi, User, ShoppingCart, Package, ArrowUp, HardDrive } from "lucide-react";
 import { WordReveal } from "@/components/ui/TextReveal";
 import LearnMoreModal, { LearnMoreItem } from "@/components/ui/LearnMoreModal";
 import ThreatHeatmap from "./ThreatHeatmap";
@@ -83,15 +83,16 @@ const features: CamFeature[] = [
     },
     {
         icon: Cloud,
-        title: "Cloud Recording",
-        desc: "30-day cloud storage with instant playback. Search footage by event, time, or person.",
-        tagline: "Every second, retrievable.",
-        long: "Encrypted cloud archives keep 30 days of footage at your fingertips. Search by event type, person, zone, or timestamp and jump to the exact frame in seconds.",
+        title: "Cloud Recording — No DVR",
+        desc: "Every frame streams straight to the Probiz Cloud. No tapes, no boxes, no missing footage.",
+        tagline: "Zero hardware. Infinite memory.",
+        long: "Throw away the DVR. Every camera streams encrypted footage directly to the Probiz Cloud, indexed by AI in real-time. Search by event, person, zone or timestamp — and jump to the exact frame in seconds, from any device.",
         highlights: [
-            "30-day rolling cloud retention",
-            "AI-powered footage search",
-            "Instant scrub & 4-camera grid replay",
-            "Encrypted at rest (AES-256)",
+            "Zero on-prem hardware — no DVR/NVR boxes",
+            "Encrypted live upload · AES-256 at rest",
+            "30-day rolling retention (extendable)",
+            "AI-powered footage search by event",
+            "Instant 4-camera grid replay from anywhere",
             "Export incident clips with one click",
         ],
     },
@@ -132,12 +133,15 @@ export default function AICameraContent() {
                 }} />
                 <div className="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
                     <div className="text-[11px] uppercase tracking-[0.25em] text-white/40 font-semibold mb-4 sm:mb-6">— Live Monitoring</div>
-                    <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-semibold tracking-ultra leading-[0.95] text-white mb-12 sm:mb-16">
+                    <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-semibold tracking-ultra leading-[0.95] text-white mb-8 sm:mb-10">
                         <WordReveal text="Every angle." />{" "}
                         <span className="italic font-light text-gradient-accent"><WordReveal text="Every second." delay={0.3} /></span>
                     </h2>
 
-                    <div className="grid lg:grid-cols-3 gap-6">
+                    {/* Cloud upload HUD */}
+                    <CloudSyncHUD />
+
+                    <div className="grid lg:grid-cols-3 gap-6 mt-6">
                         {/* Camera Grid */}
                         <div className="lg:col-span-2 grid grid-cols-2 gap-3">
                             {zones.map((zone, i) => (
@@ -420,6 +424,9 @@ function BigCameraFeed({ zone, index, bg }: { zone: string; index: number; bg: s
                 <span className="text-[9px] sm:text-[10px] font-semibold text-white/90 tracking-wider">LIVE</span>
             </div>
 
+            {/* Cloud upload stream */}
+            <CloudUploadStream index={index} accentClass={detectionPalettes[index]?.text || "text-emerald-300"} />
+
             {/* Live timestamp */}
             <Timestamp />
 
@@ -427,6 +434,96 @@ function BigCameraFeed({ zone, index, bg }: { zone: string; index: number; bg: s
             <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 text-[10px] sm:text-xs text-white/60 font-medium">{zone}</div>
             {/* Camera ID */}
             <div className="absolute bottom-2 sm:bottom-3 right-2 sm:right-3 text-[9px] text-white/30 font-mono">CAM-{String(index + 1).padStart(2, "0")}</div>
+        </motion.div>
+    );
+}
+
+/* ── Per-feed cloud upload stream ── */
+function CloudUploadStream({ index, accentClass }: { index: number; accentClass: string }) {
+    return (
+        <div className="absolute top-2 sm:top-3 right-12 sm:right-14 flex flex-col items-center pointer-events-none z-10">
+            <Cloud size={12} className={`${accentClass} opacity-90`} />
+            <div className="relative w-0.5 h-7 mt-0.5 overflow-hidden">
+                {[0, 1, 2].map((i) => (
+                    <motion.span
+                        key={i}
+                        className={`absolute left-0 right-0 h-1 rounded-full bg-current ${accentClass}`}
+                        initial={{ y: 28, opacity: 0 }}
+                        animate={{ y: -4, opacity: [0, 1, 0] }}
+                        transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.45 + index * 0.12, ease: "easeOut" }}
+                    />
+                ))}
+            </div>
+        </div>
+    );
+}
+
+/* ── Top-of-grid Probiz Cloud sync HUD ── */
+function CloudSyncHUD() {
+    const [mb, setMb] = useState(124);
+    const [hours, setHours] = useState(720);
+    useEffect(() => {
+        const t = setInterval(() => {
+            setMb((p) => +(p + Math.random() * 0.8).toFixed(1));
+            setHours((p) => p + Math.random() * 0.01);
+        }, 600);
+        return () => clearInterval(t);
+    }, []);
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative px-4 py-3 rounded-xl border border-emerald-400/20 bg-emerald-400/[0.04] backdrop-blur-xl overflow-hidden"
+        >
+            {/* Flowing background streak */}
+            <motion.div
+                className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-transparent via-emerald-400/15 to-transparent"
+                animate={{ x: ["-100%", "500%"] }}
+                transition={{ duration: 3.2, repeat: Infinity, ease: "linear" }}
+            />
+            <div className="relative flex items-center gap-3 sm:gap-4 flex-wrap">
+                <div className="relative flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-400/10 border border-emerald-400/30">
+                    <motion.span
+                        className="absolute inset-0 rounded-lg border border-emerald-400"
+                        animate={{ scale: [1, 1.45], opacity: [0.6, 0] }}
+                        transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+                    />
+                    <Cloud size={15} className="text-emerald-400" />
+                </div>
+
+                <div className="flex flex-col leading-tight">
+                    <span className="text-[9px] uppercase tracking-widest text-white/40 font-semibold">Probiz Cloud</span>
+                    <span className="text-[12px] sm:text-[13px] text-white/85 font-medium">Streaming · 4 cameras live</span>
+                </div>
+
+                <div className="flex items-center gap-0.5">
+                    {[0, 1, 2].map((i) => (
+                        <motion.span
+                            key={i}
+                            animate={{ y: [3, -3, 3], opacity: [0.3, 1, 0.3] }}
+                            transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.18, ease: "easeInOut" }}
+                        >
+                            <ArrowUp size={11} className="text-emerald-400" />
+                        </motion.span>
+                    ))}
+                </div>
+
+                <div className="ml-auto flex items-center gap-3 sm:gap-4 flex-wrap">
+                    <div className="flex items-center gap-1.5">
+                        <span className="text-[9px] uppercase tracking-widest text-white/40">Up</span>
+                        <span className="text-[12px] font-mono text-emerald-300 tabular-nums">{mb.toFixed(1)} MB/s</span>
+                    </div>
+                    <div className="hidden sm:flex items-center gap-1.5">
+                        <HardDrive size={11} className="text-white/40" />
+                        <span className="text-[12px] font-mono text-white/70 tabular-nums">{Math.floor(hours)}h stored</span>
+                    </div>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-400/10 border border-emerald-400/30 text-[9px] uppercase tracking-widest text-emerald-300 font-semibold">
+                        No DVR
+                    </span>
+                </div>
+            </div>
         </motion.div>
     );
 }
