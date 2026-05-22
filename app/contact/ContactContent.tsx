@@ -48,7 +48,7 @@ export default function ContactContent() {
                             <div className="space-y-4">
                                 {[
                                     { icon: Mail, label: "Email", value: "hello@probiz.app" },
-                                    { icon: Phone, label: "Phone", value: "+91 80 4567 8900" },
+                                    { icon: Phone, label: "Phone", value: "+91 99161 99499" },
                                     { icon: MapPin, label: "Office", value: "HSR Layout, Bangalore 560102" },
                                 ].map((c, i) => {
                                     const Icon = c.icon;

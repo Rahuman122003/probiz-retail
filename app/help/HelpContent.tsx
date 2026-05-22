@@ -43,7 +43,7 @@ export default function HelpContent() {
                     {[
                         { icon: MessageCircle, title: "Live Chat", desc: "Chat with our team", avail: "Mon–Sat, 9am–9pm" },
                         { icon: Mail, title: "Email", desc: "support@probiz.app", avail: "24hr response time" },
-                        { icon: Phone, title: "Phone", desc: "+91 80 4567 8900", avail: "Mon–Fri, 10am–6pm" },
+                        { icon: Phone, title: "Phone", desc: "+91 99161 99499", avail: "Mon–Fri, 10am–6pm" },
                     ].map((c, i) => {
                         const Icon = c.icon;
                         return (
