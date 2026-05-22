@@ -42,7 +42,7 @@ export default function HelpContent() {
                 <div className="grid sm:grid-cols-3 gap-4 sm:gap-6">
                     {[
                         { icon: MessageCircle, title: "Live Chat", desc: "Chat with our team", avail: "Mon–Sat, 9am–9pm" },
-                        { icon: Mail, title: "Email", desc: "support@probiz.app", avail: "24hr response time" },
+                        { icon: Mail, title: "Email", desc: "info@probiretail.com", avail: "24hr response time" },
                         { icon: Phone, title: "Phone", desc: "+91 99161 99499", avail: "Mon–Fri, 10am–6pm" },
                     ].map((c, i) => {
                         const Icon = c.icon;

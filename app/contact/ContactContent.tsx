@@ -47,9 +47,9 @@ export default function ContactContent() {
                             <h3 className="text-lg font-semibold tracking-tight mb-4">Get in touch</h3>
                             <div className="space-y-4">
                                 {[
-                                    { icon: Mail, label: "Email", value: "hello@probiz.app" },
+                                    { icon: Mail, label: "Email", value: "info@probiretail.com" },
                                     { icon: Phone, label: "Phone", value: "+91 99161 99499" },
-                                    { icon: MapPin, label: "Office", value: "HSR Layout, Bangalore 560102" },
+                                    { icon: MapPin, label: "Locations", value: "Bengaluru · Chennai · Coimbatore" },
                                 ].map((c, i) => {
                                     const Icon = c.icon;
                                     return (

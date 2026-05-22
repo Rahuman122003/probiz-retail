@@ -398,7 +398,82 @@ function SalesChart() {
                     <span className="absolute -bottom-1 right-3 w-2 h-2 rotate-45 bg-ink-950" />
                 </motion.div>
             </div>
+
+            {/* Bar trend (daily volume) */}
+            <div className="mt-4 pt-3 border-t border-ink-100">
+                <div className="flex items-center justify-between mb-2">
+                    <div className="text-[9px] uppercase tracking-wider text-ink-400">Daily volume · 14 days</div>
+                    <div className="flex items-center gap-3 text-[9px] text-ink-500">
+                        <span className="flex items-center gap-1">
+                            <span className="w-2 h-2 rounded-sm bg-gradient-to-t from-accent to-purple-500" />
+                            Sales
+                        </span>
+                        <span className="flex items-center gap-1">
+                            <span className="w-2 h-2 rounded-sm bg-ink-200" />
+                            Avg
+                        </span>
+                    </div>
+                </div>
+                <BarTrend />
+            </div>
         </motion.div>
+    );
+}
+
+/* ─────────── Bar Trend (daily volume) ─────────── */
+const BAR_DATA = [
+    32, 41, 28, 56, 48, 62, 39,
+    58, 72, 51, 68, 84, 76, 92,
+];
+function BarTrend() {
+    const max = Math.max(...BAR_DATA);
+    const avg = BAR_DATA.reduce((s, x) => s + x, 0) / BAR_DATA.length;
+    const avgPct = (avg / max) * 100;
+    return (
+        <div className="relative h-16 sm:h-20">
+            {/* Average reference line */}
+            <div
+                className="absolute left-0 right-0 border-t border-dashed border-ink-300"
+                style={{ bottom: `${avgPct}%` }}
+            >
+                <span className="absolute -top-3 right-0 text-[8px] font-mono text-ink-400 bg-white px-1">
+                    avg ₹{Math.round(avg * 1000).toLocaleString("en-IN")}
+                </span>
+            </div>
+            <div className="absolute inset-0 flex items-end gap-[3px] sm:gap-1">
+                {BAR_DATA.map((v, i) => {
+                    const h = (v / max) * 100;
+                    const isPeak = v === max;
+                    return (
+                        <motion.div
+                            key={i}
+                            className="flex-1 relative group"
+                            initial={{ height: 0 }}
+                            whileInView={{ height: `${h}%` }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.7, delay: 0.5 + i * 0.04, ease }}
+                        >
+                            <div
+                                className={`absolute inset-0 rounded-sm bg-gradient-to-t ${
+                                    isPeak ? "from-accent to-purple-500" : "from-accent/60 to-purple-500/60"
+                                } group-hover:from-accent group-hover:to-purple-500 transition-colors`}
+                            />
+                            {isPeak && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 4 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 1.4 }}
+                                    className="absolute -top-3 left-1/2 -translate-x-1/2 text-[8px] font-semibold text-accent whitespace-nowrap"
+                                >
+                                    ₹{(v * 1000).toLocaleString("en-IN")}
+                                </motion.div>
+                            )}
+                        </motion.div>
+                    );
+                })}
+            </div>
+        </div>
     );
 }
 

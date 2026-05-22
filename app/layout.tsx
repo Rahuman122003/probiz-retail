@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/Navbar";
+import AskProx from "@/components/AskProx";
 
 export const metadata: Metadata = {
   title: "Probiz Retail — AI-Powered GST Billing, Accounting & Inventory",
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
           {children}
         </SmoothScroll>
+        <AskProx />
       </body>
     </html>
   );

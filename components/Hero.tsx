@@ -1,10 +1,11 @@
 "use client";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { WordReveal, MaskReveal } from "./ui/TextReveal";
 import Magnetic from "./ui/Magnetic";
-import { TrendingUp, Sparkles, ShoppingCart, Camera, Receipt, BarChart3, Package, Users, Bell, Search } from "lucide-react";
+import { TrendingUp, TrendingDown, Sparkles, ShoppingCart, Camera, Receipt, BarChart3, Package, Users, Bell, Search, AlertTriangle, Activity, Eye } from "lucide-react";
 
 export default function Hero() {
     const ref = useRef<HTMLDivElement>(null);
@@ -67,15 +68,15 @@ export default function Hero() {
                     className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
                 >
                     <Magnetic>
-                        <button className="group relative w-full sm:w-auto px-7 py-3.5 rounded-full bg-ink-950 text-white text-[14px] font-medium overflow-hidden">
+                        <Link href="/pricing" className="group relative w-full sm:w-auto inline-block text-center px-7 py-3.5 rounded-full bg-ink-950 text-white text-[14px] font-medium overflow-hidden">
                             <span className="relative z-10">Start Free</span>
                             <div className="absolute inset-0 bg-gradient-to-r from-accent to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </button>
+                        </Link>
                     </Magnetic>
                     <Magnetic>
-                        <button className="w-full sm:w-auto px-7 py-3.5 rounded-full border border-ink-200 text-[14px] font-medium hover:bg-white transition-colors">
+                        <Link href="/pricing" className="w-full sm:w-auto inline-block text-center px-7 py-3.5 rounded-full border border-ink-200 text-[14px] font-medium hover:bg-white transition-colors">
                             Book a Demo →
-                        </button>
+                        </Link>
                     </Magnetic>
                 </motion.div>
             </motion.div>
@@ -153,138 +154,25 @@ export default function Hero() {
 
                             {/* Stat cards row */}
                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                                {[
-                                    { label: "Revenue", value: "₹4,82,300", change: "+23.4%", positive: true, icon: TrendingUp },
-                                    { label: "Invoices", value: "342", change: "+12%", positive: true, icon: Receipt },
-                                    { label: "AI Alerts", value: "7", change: "−3 vs yday", positive: true, icon: Camera },
-                                    { label: "POS Sales", value: "₹1,24,500", change: "+18%", positive: true, icon: ShoppingCart },
-                                ].map((stat, i) => (
-                                    <motion.div
-                                        key={i}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.6, delay: 1.8 + i * 0.1 }}
-                                        className="p-3 sm:p-4 rounded-xl border border-ink-100 bg-white hover:shadow-md hover:shadow-ink-950/5 transition-shadow"
-                                    >
-                                        <div className="flex items-center justify-between mb-2">
-                                            <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-ink-400">{stat.label}</span>
-                                            <stat.icon size={13} className="text-ink-300" />
-                                        </div>
-                                        <div className="text-lg sm:text-xl font-semibold tracking-tight text-ink-900">{stat.value}</div>
-                                        <div className="text-[10px] sm:text-[11px] text-emerald-600 font-medium mt-0.5">{stat.change}</div>
-                                    </motion.div>
+                                {HERO_STATS.map((stat, i) => (
+                                    <HeroStatCard key={i} stat={stat} index={i} />
                                 ))}
                             </div>
 
                             {/* Charts row */}
                             <div className="grid lg:grid-cols-5 gap-3 sm:gap-4">
                                 {/* Main chart */}
-                                <div className="lg:col-span-3 p-4 sm:p-5 rounded-xl border border-ink-100">
-                                    <div className="flex items-center justify-between mb-3 sm:mb-4">
-                                        <div className="text-xs sm:text-sm font-semibold text-ink-700">Sales Overview</div>
-                                        <div className="flex gap-1">
-                                            {["1D", "1W", "1M"].map((t, i) => (
-                                                <span key={t} className={`text-[9px] px-2 py-0.5 rounded-md ${i === 2 ? "bg-ink-950 text-white" : "text-ink-400"}`}>{t}</span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <svg viewBox="0 0 600 120" className="w-full h-20 sm:h-28">
-                                        <defs>
-                                            <linearGradient id="heroG" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="0%" stopColor="#0066ff" stopOpacity="0.2" />
-                                                <stop offset="100%" stopColor="#0066ff" stopOpacity="0" />
-                                            </linearGradient>
-                                        </defs>
-                                        <motion.path
-                                            d="M0,90 Q50,70 100,75 T200,55 T300,60 T400,35 T500,25 T600,15 L600,120 L0,120 Z"
-                                            fill="url(#heroG)"
-                                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.5, delay: 2.2 }}
-                                        />
-                                        <motion.path
-                                            d="M0,90 Q50,70 100,75 T200,55 T300,60 T400,35 T500,25 T600,15"
-                                            fill="none" stroke="#0066ff" strokeWidth="2.5" strokeLinecap="round"
-                                            initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2, delay: 2 }}
-                                        />
-                                        {/* Dot at peak */}
-                                        <motion.circle
-                                            cx="600" cy="15" r="4" fill="#0066ff"
-                                            initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 3.8, type: "spring" }}
-                                        />
-                                        <motion.circle
-                                            cx="600" cy="15" r="8" fill="none" stroke="#0066ff" strokeWidth="1" opacity="0.3"
-                                            initial={{ opacity: 0 }} animate={{ opacity: [0, 0.5, 0] }} transition={{ delay: 4, duration: 2, repeat: Infinity }}
-                                        />
-                                    </svg>
-                                </div>
+                                <HeroSalesChart />
 
                                 {/* AI Camera mini feed + Recent POS */}
                                 <div className="lg:col-span-2 space-y-3 sm:space-y-4">
-                                    {/* AI Camera mini */}
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 15 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 2.5, duration: 0.8 }}
-                                        className="p-3 sm:p-4 rounded-xl border border-ink-100"
-                                    >
-                                        <div className="flex items-center justify-between mb-2">
-                                            <div className="flex items-center gap-1.5">
-                                                <Camera size={12} className="text-red-500" />
-                                                <span className="text-[10px] sm:text-xs font-semibold text-ink-700">AI Camera</span>
-                                            </div>
-                                            <div className="flex items-center gap-1 bg-emerald-50 px-1.5 py-0.5 rounded">
-                                                <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-                                                <span className="text-[8px] sm:text-[9px] font-medium text-emerald-700">4 Live</span>
-                                            </div>
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-1.5">
-                                            {["Entrance", "Checkout", "Aisle 3", "Stock"].map((z, i) => (
-                                                <div key={i} className="aspect-video rounded-md bg-ink-900 relative overflow-hidden">
-                                                    <motion.div
-                                                        className="absolute inset-x-0 h-[1px] bg-emerald-400/40"
-                                                        animate={{ top: ["0%", "100%", "0%"] }}
-                                                        transition={{ duration: 3 + i, repeat: Infinity, ease: "linear" }}
-                                                    />
-                                                    <div className="absolute top-1 left-1 flex items-center gap-0.5">
-                                                        <span className="w-1 h-1 rounded-full bg-red-500" />
-                                                        <span className="text-[6px] text-white/60 font-medium">{z}</span>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </motion.div>
-
-                                    {/* Recent POS transactions */}
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 15 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 2.8, duration: 0.8 }}
-                                        className="p-3 sm:p-4 rounded-xl border border-ink-100"
-                                    >
-                                        <div className="flex items-center gap-1.5 mb-2.5">
-                                            <ShoppingCart size={12} className="text-accent" />
-                                            <span className="text-[10px] sm:text-xs font-semibold text-ink-700">Recent POS</span>
-                                        </div>
-                                        {[
-                                            { id: "#2478", amount: "₹2,211", time: "Just now" },
-                                            { id: "#2477", amount: "₹856", time: "3m ago" },
-                                            { id: "#2476", amount: "₹4,320", time: "8m ago" },
-                                        ].map((tx, i) => (
-                                            <div key={i} className="flex items-center justify-between py-1.5 border-b border-ink-50 last:border-0">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-5 h-5 rounded-md bg-accent/10 flex items-center justify-center">
-                                                        <Sparkles size={9} className="text-accent" />
-                                                    </div>
-                                                    <span className="text-[10px] sm:text-xs font-medium text-ink-600">{tx.id}</span>
-                                                </div>
-                                                <div className="text-right">
-                                                    <div className="text-[10px] sm:text-xs font-semibold text-ink-800">{tx.amount}</div>
-                                                    <div className="text-[8px] text-ink-400">{tx.time}</div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </motion.div>
+                                    <HeroCameraGrid />
+                                    <HeroPOSFeed />
                                 </div>
                             </div>
+
+                            {/* Trends mini-row */}
+                            <HeroTrends />
                         </div>
                     </div>
                 </motion.div>
@@ -294,4 +182,427 @@ export default function Hero() {
             </motion.div>
         </section>
     );
+}
+
+/* ──────── Hero stat cards with count-up + sparkline ehover glow ──────── */
+const HERO_STATS = [
+    {
+        label: "Revenue", icon: TrendingUp, raw: 482300, prefix: "₹", change: "+23.4%", up: true,
+        accent: "text-emerald-600", bg: "bg-emerald-50",
+        spark: [0.3, 0.45, 0.4, 0.6, 0.5, 0.7, 0.85, 0.95],
+        color: "#10b981",
+    },
+    {
+        label: "Invoices", icon: Receipt, raw: 342, prefix: "", change: "+12%", up: true,
+        accent: "text-sky-600", bg: "bg-sky-50",
+        spark: [0.4, 0.5, 0.45, 0.55, 0.7, 0.65, 0.8, 0.9],
+        color: "#0ea5e9",
+    },
+    {
+        label: "AI Alerts", icon: Camera, raw: 7, prefix: "", change: "−3 vs yday", up: false,
+        accent: "text-rose-600", bg: "bg-rose-50",
+        spark: [0.7, 0.65, 0.55, 0.5, 0.45, 0.4, 0.35, 0.3],
+        color: "#f43f5e",
+    },
+    {
+        label: "POS Sales", icon: ShoppingCart, raw: 124500, prefix: "₹", change: "+18%", up: true,
+        accent: "text-violet-600", bg: "bg-violet-50",
+        spark: [0.2, 0.35, 0.4, 0.55, 0.6, 0.7, 0.8, 0.9],
+        color: "#8b5cf6",
+    },
+];
+
+function HeroStatCard({ stat, index }: { stat: typeof HERO_STATS[number]; index: number }) {
+    const Icon = stat.icon;
+    const display = useCountUp(stat.raw, 1500, 1800 + index * 100);
+    const formatted = stat.prefix === "₹"
+        ? `₹${display.toLocaleString("en-IN")}`
+        : display.toLocaleString("en-IN");
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.8 + index * 0.1 }}
+            whileHover={{ y: -2 }}
+            className="group relative p-3 sm:p-4 rounded-xl border border-ink-100 bg-white hover:shadow-lg hover:shadow-ink-950/5 transition-shadow overflow-hidden"
+        >
+            {/* Hover glow */}
+            <div
+                aria-hidden
+                className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-500"
+                style={{ background: stat.color }}
+            />
+            <div className="relative">
+                <div className="flex items-center justify-between mb-2">
+                    <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-ink-400">{stat.label}</span>
+                    <div className={`w-5 h-5 rounded-md ${stat.bg} flex items-center justify-center`}>
+                        <Icon size={11} className={stat.accent} strokeWidth={1.8} />
+                    </div>
+                </div>
+                <div className="text-base sm:text-xl font-semibold tracking-tight text-ink-900 tabular-nums">{formatted}</div>
+                <div className={`flex items-center gap-0.5 text-[10px] sm:text-[11px] font-medium mt-0.5 ${stat.up ? "text-emerald-600" : "text-rose-600"}`}>
+                    {stat.up ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
+                    {stat.change}
+                </div>
+                <HeroSparkline points={stat.spark} color={stat.color} delay={2 + index * 0.1} />
+            </div>
+        </motion.div>
+    );
+}
+
+function HeroSparkline({ points, color, delay = 0 }: { points: number[]; color: string; delay?: number }) {
+    const w = 100, h = 18;
+    const xStep = w / (points.length - 1);
+    const d = points.map((p, i) => `${i === 0 ? "M" : "L"}${(i * xStep).toFixed(1)},${(h - p * h).toFixed(1)}`).join(" ");
+    return (
+        <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-4 mt-1.5" preserveAspectRatio="none">
+            <motion.path
+                d={d}
+                fill="none"
+                stroke={color}
+                strokeWidth={1.4}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 0.85 }}
+                transition={{ duration: 1.2, delay, ease: [0.22, 1, 0.36, 1] }}
+            />
+        </svg>
+    );
+}
+
+/* ──────── Hero sales chart with traveling cursor + tooltip ──────── */
+function HeroSalesChart() {
+    const series = useRef<number[]>(
+        Array.from({ length: 32 }, (_, i) => 80 - (Math.sin(i * 0.5) * 16 + Math.cos(i * 0.3) * 10 + i * 1.6))
+    ).current;
+    const w = 600, h = 120, pad = 8;
+    const min = Math.min(...series), max = Math.max(...series);
+    const xStep = (w - pad * 2) / (series.length - 1);
+    const pts = series.map((v, i) => ({
+        x: pad + i * xStep,
+        y: pad + ((v - min) / (max - min || 1)) * (h - pad * 2),
+    }));
+    const linePath = pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+    const areaPath = `${linePath} L${pts[pts.length - 1].x},${h} L${pts[0].x},${h} Z`;
+
+    const [cursor, setCursor] = useState(pts.length - 1);
+    useEffect(() => {
+        const id = setInterval(() => setCursor((c) => (c + 1) % pts.length), 600);
+        return () => clearInterval(id);
+    }, [pts.length]);
+
+    const cur = pts[cursor];
+    const value = Math.round((1 - (cur.y - pad) / (h - pad * 2)) * 60000 + 12000).toLocaleString("en-IN");
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2.1, duration: 0.8 }}
+            className="lg:col-span-3 p-4 sm:p-5 rounded-xl border border-ink-100 relative overflow-hidden"
+        >
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <div className="flex items-center gap-2">
+                    <Activity size={13} className="text-accent" />
+                    <div className="text-xs sm:text-sm font-semibold text-ink-700">Sales Overview</div>
+                    <span className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-medium bg-emerald-50 text-emerald-700">
+                        <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" /> live
+                    </span>
+                </div>
+                <div className="flex gap-1">
+                    {["1D", "1W", "1M"].map((t, i) => (
+                        <span key={t} className={`text-[9px] px-2 py-0.5 rounded-md ${i === 2 ? "bg-ink-950 text-white" : "text-ink-400"}`}>{t}</span>
+                    ))}
+                </div>
+            </div>
+            <div className="relative">
+                <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-20 sm:h-28" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="heroG" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#0066ff" stopOpacity="0.25" />
+                            <stop offset="100%" stopColor="#0066ff" stopOpacity="0" />
+                        </linearGradient>
+                        <linearGradient id="heroLine" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stopColor="#0066ff" />
+                            <stop offset="100%" stopColor="#8b5cf6" />
+                        </linearGradient>
+                    </defs>
+                    {/* Grid */}
+                    {[30, 60, 90].map((g) => (
+                        <line key={g} x1={pad} x2={w - pad} y1={g} y2={g} stroke="#e5e7eb" strokeDasharray="2 4" strokeWidth="0.4" />
+                    ))}
+                    <motion.path
+                        d={areaPath}
+                        fill="url(#heroG)"
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.5, delay: 2.4 }}
+                    />
+                    <motion.path
+                        d={linePath}
+                        fill="none" stroke="url(#heroLine)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
+                        initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2.2, delay: 2.2 }}
+                    />
+                    {/* Vertical guide */}
+                    <motion.line
+                        x1={cur.x} x2={cur.x} y1={pad} y2={h - pad}
+                        stroke="#0066ff" strokeWidth="0.6" strokeDasharray="2 3"
+                        initial={{ opacity: 0 }} animate={{ opacity: 0.4 }}
+                    />
+                    {/* Traveling cursor dot */}
+                    <motion.circle
+                        cx={cur.x} cy={cur.y} r="3.5"
+                        fill="#0066ff"
+                        animate={{ cx: cur.x, cy: cur.y }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                    />
+                    <motion.circle
+                        cx={cur.x} cy={cur.y} r="7"
+                        fill="none" stroke="#0066ff" strokeWidth="1"
+                        animate={{ scale: [1, 1.6, 1], opacity: [0.5, 0, 0.5] }}
+                        transition={{ duration: 1.6, repeat: Infinity }}
+                        style={{ transformOrigin: `${cur.x}px ${cur.y}px` }}
+                    />
+                </svg>
+                {/* Tooltip */}
+                <motion.div
+                    className="absolute pointer-events-none"
+                    style={{ left: `${(cur.x / w) * 100}%`, top: `${(cur.y / h) * 100}%` }}
+                    animate={{ x: "-50%", y: "-130%" }}
+                    transition={{ duration: 0.4 }}
+                >
+                    <div className="bg-ink-950 text-white text-[9px] px-2 py-1 rounded-md shadow-lg whitespace-nowrap">
+                        <span className="text-white/50">₹</span>
+                        <span className="font-semibold tabular-nums">{value}</span>
+                    </div>
+                </motion.div>
+            </div>
+        </motion.div>
+    );
+}
+
+/* ──────── AI Camera grid with detection bounding boxes ──────── */
+const CAM_FEEDS = [
+    { name: "Entrance", detect: { x: 18, y: 30, w: 32, h: 50, label: "Person", color: "#10b981" } },
+    { name: "Checkout", detect: { x: 36, y: 22, w: 40, h: 56, label: "Cart", color: "#0066ff" } },
+    { name: "Aisle 3", detect: { x: 28, y: 36, w: 30, h: 42, label: "Person", color: "#10b981" } },
+    { name: "Stock", detect: { x: 14, y: 18, w: 60, h: 60, label: "Low", color: "#f59e0b" } },
+];
+
+function HeroCameraGrid() {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2.5, duration: 0.8 }}
+            className="p-3 sm:p-4 rounded-xl border border-ink-100"
+        >
+            <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-1.5">
+                    <Camera size={12} className="text-red-500" />
+                    <span className="text-[10px] sm:text-xs font-semibold text-ink-700">AI Camera</span>
+                    <span className="text-[9px] text-ink-400">· 4 zones</span>
+                </div>
+                <div className="flex items-center gap-1 bg-red-50 px-1.5 py-0.5 rounded">
+                    <span className="w-1 h-1 rounded-full bg-red-500 animate-pulse" />
+                    <span className="text-[8px] sm:text-[9px] font-semibold text-red-600">REC</span>
+                </div>
+            </div>
+            <div className="grid grid-cols-2 gap-1.5">
+                {CAM_FEEDS.map((f, i) => (
+                    <CamTile key={i} feed={f} delay={i * 0.4} />
+                ))}
+            </div>
+        </motion.div>
+    );
+}
+
+function CamTile({ feed, delay }: { feed: typeof CAM_FEEDS[number]; delay: number }) {
+    return (
+        <div className="aspect-video rounded-md bg-gradient-to-br from-ink-800 to-ink-950 relative overflow-hidden">
+            {/* Subtle scanlines */}
+            <div
+                aria-hidden
+                className="absolute inset-0 opacity-20 pointer-events-none"
+                style={{ backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 3px)" }}
+            />
+            {/* Sweeping scan line */}
+            <motion.div
+                className="absolute inset-x-0 h-[1px] bg-emerald-400/50 shadow-[0_0_8px_rgba(16,185,129,0.6)]"
+                animate={{ top: ["0%", "100%", "0%"] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear", delay }}
+            />
+            {/* Detection bounding box */}
+            <motion.div
+                className="absolute border-2 rounded-sm"
+                style={{
+                    left: `${feed.detect.x}%`,
+                    top: `${feed.detect.y}%`,
+                    width: `${feed.detect.w}%`,
+                    height: `${feed.detect.h}%`,
+                    borderColor: feed.detect.color,
+                    boxShadow: `0 0 12px ${feed.detect.color}55`,
+                }}
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: [0, 1, 1, 0.3, 1], scale: [0.85, 1, 1, 1, 1] }}
+                transition={{ duration: 4, repeat: Infinity, delay, times: [0, 0.15, 0.7, 0.85, 1] }}
+            >
+                {/* Corner ticks */}
+                <span className="absolute -top-px -left-px w-1.5 h-1.5 border-t-2 border-l-2" style={{ borderColor: feed.detect.color }} />
+                <span className="absolute -top-px -right-px w-1.5 h-1.5 border-t-2 border-r-2" style={{ borderColor: feed.detect.color }} />
+                <span className="absolute -bottom-px -left-px w-1.5 h-1.5 border-b-2 border-l-2" style={{ borderColor: feed.detect.color }} />
+                <span className="absolute -bottom-px -right-px w-1.5 h-1.5 border-b-2 border-r-2" style={{ borderColor: feed.detect.color }} />
+                {/* Label */}
+                <div
+                    className="absolute -top-3 left-0 px-1 py-0 rounded-sm text-[6px] font-bold text-white whitespace-nowrap"
+                    style={{ backgroundColor: feed.detect.color }}
+                >
+                    {feed.detect.label}
+                </div>
+            </motion.div>
+            {/* Top-left REC label */}
+            <div className="absolute top-1 left-1 flex items-center gap-0.5">
+                <span className="w-1 h-1 rounded-full bg-red-500 animate-pulse" />
+                <span className="text-[6px] text-white/70 font-medium tracking-wider">{feed.name}</span>
+            </div>
+            {/* Eye icon top-right (face detection indicator) */}
+            <div className="absolute top-1 right-1">
+                <Eye size={7} className="text-emerald-400/70" />
+            </div>
+        </div>
+    );
+}
+
+/* ──────── Live POS feed (auto-rotating) ──────── */
+const POS_TXNS = [
+    { id: "#2478", amount: "₹2,211" },
+    { id: "#2479", amount: "₹856" },
+    { id: "#2480", amount: "₹4,320" },
+    { id: "#2481", amount: "₹1,540" },
+    { id: "#2482", amount: "₹899" },
+    { id: "#2483", amount: "₹3,180" },
+];
+
+function HeroPOSFeed() {
+    const [tick, setTick] = useState(0);
+    useEffect(() => {
+        const id = setInterval(() => setTick((t) => t + 1), 2400);
+        return () => clearInterval(id);
+    }, []);
+    const visible = Array.from({ length: 3 }, (_, i) => {
+        const idx = (tick + i) % POS_TXNS.length;
+        return { ...POS_TXNS[idx], time: i === 0 ? "Just now" : i === 1 ? "3m ago" : "8m ago" };
+    });
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2.8, duration: 0.8 }}
+            className="p-3 sm:p-4 rounded-xl border border-ink-100"
+        >
+            <div className="flex items-center justify-between mb-2.5">
+                <div className="flex items-center gap-1.5">
+                    <ShoppingCart size={12} className="text-accent" />
+                    <span className="text-[10px] sm:text-xs font-semibold text-ink-700">Recent POS</span>
+                </div>
+                <span className="text-[8px] uppercase tracking-wider text-emerald-600 font-semibold flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" /> live
+                </span>
+            </div>
+            <div className="min-h-[88px]">
+                <AnimatePresence mode="popLayout" initial={false}>
+                    {visible.map((tx, i) => (
+                        <motion.div
+                            key={`${tick}-${tx.id}`}
+                            layout
+                            initial={{ opacity: 0, x: -8 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: 8 }}
+                            transition={{ duration: 0.35, delay: i * 0.04 }}
+                            className="flex items-center justify-between py-1.5 border-b border-ink-50 last:border-0"
+                        >
+                            <div className="flex items-center gap-2">
+                                <div className={`w-5 h-5 rounded-md flex items-center justify-center ${i === 0 ? "bg-emerald-100 text-emerald-600" : "bg-accent/10 text-accent"}`}>
+                                    <Sparkles size={9} />
+                                </div>
+                                <span className="text-[10px] sm:text-xs font-medium text-ink-600">{tx.id}</span>
+                            </div>
+                            <div className="text-right">
+                                <div className="text-[10px] sm:text-xs font-semibold text-ink-800 tabular-nums">{tx.amount}</div>
+                                <div className="text-[8px] text-ink-400">{tx.time}</div>
+                            </div>
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
+            </div>
+        </motion.div>
+    );
+}
+
+/* ──────── Trends mini-row (4 sparkline cards) ──────── */
+const TRENDS = [
+    { label: "Tea sales", value: "+42%", icon: TrendingUp, color: "#10b981", spark: [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9], up: true },
+    { label: "Foot traffic", value: "1.2K", icon: Users, color: "#0066ff", spark: [0.4, 0.5, 0.45, 0.6, 0.65, 0.7, 0.75, 0.8], up: true },
+    { label: "Avg basket", value: "₹412", icon: ShoppingCart, color: "#8b5cf6", spark: [0.5, 0.55, 0.6, 0.65, 0.7, 0.7, 0.75, 0.8], up: true },
+    { label: "Low stock", value: "4 items", icon: AlertTriangle, color: "#f59e0b", spark: [0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65], up: false },
+];
+
+function HeroTrends() {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 3, duration: 0.8 }}
+            className="grid grid-cols-2 lg:grid-cols-4 gap-2.5"
+        >
+            {TRENDS.map((t, i) => {
+                const Icon = t.icon;
+                return (
+                    <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 3.1 + i * 0.08 }}
+                        whileHover={{ y: -2 }}
+                        className="group relative p-2.5 sm:p-3 rounded-xl border border-ink-100 bg-white hover:shadow-md hover:shadow-ink-950/5 transition-shadow overflow-hidden"
+                    >
+                        <div className="flex items-center gap-2 mb-1">
+                            <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: `${t.color}15` }}>
+                                <Icon size={11} style={{ color: t.color }} strokeWidth={2} />
+                            </div>
+                            <span className="text-[9px] uppercase tracking-wider text-ink-400 truncate">{t.label}</span>
+                        </div>
+                        <div className="flex items-end justify-between gap-2">
+                            <div className="text-sm sm:text-base font-semibold tracking-tight tabular-nums" style={{ color: t.color }}>{t.value}</div>
+                            <HeroSparkline points={t.spark} color={t.color} delay={3.2 + i * 0.08} />
+                        </div>
+                    </motion.div>
+                );
+            })}
+        </motion.div>
+    );
+}
+
+/* ──────── Count-up hook ──────── */
+function useCountUp(target: number, duration = 1500, delayMs = 0) {
+    const [value, setValue] = useState(0);
+    useEffect(() => {
+        let raf: number;
+        const startAt = performance.now() + delayMs;
+        const step = (now: number) => {
+            const t = now - startAt;
+            if (t < 0) {
+                raf = requestAnimationFrame(step);
+                return;
+            }
+            const p = Math.min(1, t / duration);
+            const eased = 1 - Math.pow(1 - p, 3);
+            setValue(Math.round(target * eased));
+            if (p < 1) raf = requestAnimationFrame(step);
+        };
+        raf = requestAnimationFrame(step);
+        return () => cancelAnimationFrame(raf);
+    }, [target, duration, delayMs]);
+    return value;
 }

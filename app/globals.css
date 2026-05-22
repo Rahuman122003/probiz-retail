@@ -36,6 +36,11 @@ body {
   font-feature-settings: "ss01", "cv11";
 }
 
+/* Framer Motion useScroll requires a non-static container for accurate offsets */
+body {
+  position: relative;
+}
+
 html.lenis {
   height: auto;
 }

@@ -38,7 +38,7 @@ const sections: LegalSection[] = [
     {
         heading: "Your rights",
         paragraphs: [
-            "You can access, export, correct, or delete your data at any time from Settings → Privacy. You may also write to privacy@probizretail.com to exercise any privacy right under applicable Indian and global laws.",
+            "You can access, export, correct, or delete your data at any time from Settings → Privacy. You may also write to info@probiretail.com to exercise any privacy right under applicable Indian and global laws.",
         ],
     },
     {
@@ -50,7 +50,7 @@ const sections: LegalSection[] = [
     {
         heading: "Contact",
         paragraphs: [
-            "Questions about this policy? Reach our Data Protection Officer at privacy@probizretail.com.",
+            "Questions about this policy? Reach our Data Protection Officer at info@probiretail.com.",
         ],
     },
 ];

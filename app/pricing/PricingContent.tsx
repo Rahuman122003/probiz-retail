@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Check } from "lucide-react";
 
 const plans = [
@@ -39,9 +40,12 @@ export default function PricingContent() {
                                     </li>
                                 ))}
                             </ul>
-                            <button className={`mt-8 w-full py-3 rounded-full text-sm font-medium transition-colors ${p.accent ? "bg-white text-ink-950 hover:bg-ink-100" : "bg-ink-950 text-white hover:bg-ink-800"}`}>
+                            <Link
+                                href="/contact"
+                                className={`mt-8 w-full inline-block text-center py-3 rounded-full text-sm font-medium transition-colors ${p.accent ? "bg-white text-ink-950 hover:bg-ink-100" : "bg-ink-950 text-white hover:bg-ink-800"}`}
+                            >
                                 {p.price === "Custom" ? "Contact Sales" : "Get Started"}
-                            </button>
+                            </Link>
                         </motion.div>
                     ))}
                 </div>

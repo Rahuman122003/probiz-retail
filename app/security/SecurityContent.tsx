@@ -80,10 +80,10 @@ export default function SecurityContent() {
                 >
                     <h3 className="text-xl sm:text-2xl font-semibold tracking-tight text-ink-950 mb-3">Report a vulnerability</h3>
                     <p className="text-sm sm:text-base text-ink-500 leading-relaxed font-light max-w-xl mx-auto mb-6">
-                        Security researchers — we welcome responsible disclosure. Email findings to <span className="text-ink-800 font-medium">security@probizretail.com</span>. Eligible reports qualify for our bug bounty program.
+                        Security researchers — we welcome responsible disclosure. Email findings to <span className="text-ink-800 font-medium">info@probiretail.com</span>. Eligible reports qualify for our bug bounty program.
                     </p>
                     <a
-                        href="mailto:security@probizretail.com"
+                        href="mailto:info@probiretail.com"
                         className="inline-flex items-center gap-2 text-[13px] font-medium px-5 py-2.5 rounded-full bg-ink-950 text-white hover:bg-ink-900 transition-colors"
                     >
                         Contact security team →

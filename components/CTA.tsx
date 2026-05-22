@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { WordReveal } from "./ui/TextReveal";
 import Magnetic from "./ui/Magnetic";
 
@@ -42,7 +43,9 @@ export default function CTA() {
                         <button className="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-ink-950 font-medium text-sm">Get Started</button>
                     </Magnetic>
                     <Magnetic>
-                        <button className="w-full sm:w-auto px-8 py-4 rounded-full border border-white/20 text-sm">Book Demo →</button>
+                        <Link href="/pricing" className="w-full sm:w-auto inline-block text-center px-8 py-4 rounded-full border border-white/20 text-sm hover:bg-white/5 transition-colors">
+                            Book Demo →
+                        </Link>
                     </Magnetic>
                 </div>
             </div>
