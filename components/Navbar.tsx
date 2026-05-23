@@ -8,8 +8,8 @@ import Magnetic from "./ui/Magnetic";
 
 const navLinks = [
     { label: "Features", href: "/features" },
-    { label: "AI Camera", href: "/ai-camera" },
     { label: "POS", href: "/pos" },
+    { label: "AI Cloud Camera", href: "/ai-camera" },
     { label: "PROX", href: "/prox" },
     { label: "Pricing", href: "/pricing" },
     { label: "Customers", href: "/customers" },

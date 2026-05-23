@@ -34,11 +34,28 @@ body {
   color: var(--fg);
   font-family: 'Inter', system-ui, sans-serif;
   font-feature-settings: "ss01", "cv11";
+  /* Smoother text rendering during scroll */
+  text-rendering: optimizeLegibility;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Framer Motion useScroll requires a non-static container for accurate offsets */
 body {
   position: relative;
+  /* Prevent forced reflow during animations */
+  overflow-x: hidden;
+}
+
+/* Respect reduced-motion users — kill all decorative animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 html.lenis {

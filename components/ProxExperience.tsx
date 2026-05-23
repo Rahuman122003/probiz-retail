@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Rocket, Zap, Sparkles, Brain, Shield, Heart, Code2, Palette } from "lucide-react";
+import { Rocket, Zap, Sparkles, Brain, Shield, Heart, Code2, Palette, CloudRain, Sun, GraduationCap, Snowflake, TrendingUp, Camera, Bell, ShieldAlert, Eye, Package, Activity } from "lucide-react";
 import { WordReveal } from "./ui/TextReveal";
 import Magnetic from "./ui/Magnetic";
 
@@ -163,20 +163,30 @@ function AuroraCanvas() {
 
         const start = performance.now();
         let raf = 0;
+        let visible = true;
+        // Pause rendering when canvas is off-screen — major CPU savings while scrolling
+        const io = new IntersectionObserver(
+            (entries) => { visible = entries[0]?.isIntersecting ?? true; },
+            { threshold: 0 }
+        );
+        io.observe(canvas);
+
         const render = () => {
-            const t = (performance.now() - start) / 1000;
-            // Smooth mouse
-            mx += (mouseRef.current.x - mx) * 0.06;
-            my += (mouseRef.current.y - my) * 0.06;
-            gl.uniform1f(uTime, t);
-            gl.uniform2f(uMouse, mx, my);
-            gl.drawArrays(gl.TRIANGLES, 0, 6);
+            if (visible && !document.hidden) {
+                const t = (performance.now() - start) / 1000;
+                mx += (mouseRef.current.x - mx) * 0.06;
+                my += (mouseRef.current.y - my) * 0.06;
+                gl.uniform1f(uTime, t);
+                gl.uniform2f(uMouse, mx, my);
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+            }
             raf = requestAnimationFrame(render);
         };
         render();
 
         return () => {
             cancelAnimationFrame(raf);
+            io.disconnect();
             window.removeEventListener("resize", resize);
             window.removeEventListener("pointermove", onMove);
             gl.deleteBuffer(buf);
@@ -428,6 +438,9 @@ export default function ProxExperience() {
                 </div>
             </section>
 
+            {/* PROX INSIDE PROBIZ RETAIL — what PROX actually does for retailers */}
+            <ProxInRetail />
+
             {/* PROBIZ GALAXY — products under PROX */}
             <section id="prox-galaxy" className="relative py-24 sm:py-36 bg-ink-950 overflow-hidden">
                 {/* Decorative orbits */}
@@ -608,12 +621,861 @@ export default function ProxExperience() {
     );
 }
 
+/* ─────────── PROX inside Probiz Retail ─────────── */
+const SEASONS = [
+    {
+        Icon: CloudRain,
+        name: "Monsoon",
+        period: "Jun – Sep",
+        accent: "#38bdf8",
+        gradient: "from-sky-500/30 via-blue-500/20 to-indigo-500/10",
+        spikes: ["Umbrellas", "Raincoats", "Hot beverages", "Chyawanprash"],
+        suggestion: "Stock 3× more umbrellas & ginger tea — last 3 monsoons saw +212% demand in week 2.",
+    },
+    {
+        Icon: GraduationCap,
+        name: "Back to School",
+        period: "May – Jul",
+        accent: "#a78bfa",
+        gradient: "from-violet-500/30 via-purple-500/20 to-fuchsia-500/10",
+        spikes: ["Notebooks", "Stationery", "Lunch boxes", "Tiffin snacks"],
+        suggestion: "Expect +180% notebook & geometry-box sales. Pre-order from your top 2 wholesalers.",
+    },
+    {
+        Icon: Sun,
+        name: "Summer",
+        period: "Mar – May",
+        accent: "#fb923c",
+        gradient: "from-amber-500/30 via-orange-500/20 to-red-500/10",
+        spikes: ["Cold drinks", "Ice cream", "Sunscreen", "Hand fans"],
+        suggestion: "Cold-storage SKUs trend +95%. Push deals on soft-drink combos starting next week.",
+    },
+    {
+        Icon: Snowflake,
+        name: "Festive & Winter",
+        period: "Oct – Feb",
+        accent: "#f472b6",
+        gradient: "from-rose-500/30 via-pink-500/20 to-red-500/10",
+        spikes: ["Sweets", "Diyas", "Gift hampers", "Dry fruits"],
+        suggestion: "Diwali week alone drove ₹4.2L last year. Block 40% extra sweet inventory.",
+    },
+];
+
+function ProxInRetail() {
+    return (
+        <section id="prox-retail" className="relative py-24 sm:py-36 bg-gradient-to-b from-ink-950 via-[#0b0a14] to-ink-950 overflow-hidden">
+            {/* Decorative grid */}
+            <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{
+                backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+                backgroundSize: "60px 60px"
+            }} />
+            {/* Glow */}
+            <motion.div
+                aria-hidden
+                className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full opacity-20 blur-3xl pointer-events-none"
+                style={{ background: "radial-gradient(circle, #fb923c 0%, transparent 60%)" }}
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            />
+
+            <div className="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
+                {/* Heading */}
+                <div className="max-w-3xl mb-14 sm:mb-20">
+                    <div className="text-[11px] uppercase tracking-[0.3em] text-orange-400 font-semibold mb-4">— Inside Probiz Retail</div>
+                    <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-semibold tracking-ultra leading-[0.95]">
+                        <WordReveal text="What PROX does" />
+                        <br />
+                        <span className="italic font-light bg-gradient-to-br from-orange-300 via-amber-300 to-red-500 bg-clip-text text-transparent">
+                            <WordReveal text="for your store." delay={0.2} />
+                        </span>
+                    </h2>
+                    <p className="mt-6 text-base sm:text-lg text-white/60 font-light max-w-2xl leading-relaxed">
+                        PROX isn't decorative — he's the brain quietly running in the background of every Probiz Retail store. Two jobs, both ruthlessly useful: <span className="text-white/85">predict what to stock</span>, and <span className="text-white/85">protect what's already on the shelf</span>.
+                    </p>
+                </div>
+
+                {/* PILLAR 1 — Seasonal Stock Intelligence */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.7 }}
+                    className="mb-20 sm:mb-28"
+                >
+                    <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 sm:mb-10">
+                        <div>
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-400/30 text-[10px] uppercase tracking-widest text-orange-300 font-semibold mb-4">
+                                <TrendingUp size={11} /> 01 · Seasonal Stock Brain
+                            </div>
+                            <h3 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight leading-[1.05] max-w-2xl">
+                                Knows the season <span className="italic font-light text-orange-300">before you do.</span>
+                            </h3>
+                            <p className="mt-4 text-sm sm:text-base text-white/55 font-light max-w-2xl leading-relaxed">
+                                PROX studies every invoice, every barcode scan, every footfall — across years of your data. Then he reads the calendar, the weather, and the local school term. The result: a calm, confident nudge a few weeks before the rush, telling you exactly what to stock and how much.
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-2 text-[10px] text-white/40 uppercase tracking-[0.25em] font-semibold whitespace-nowrap">
+                            <Activity size={12} className="text-orange-400" /> Live demand forecasting
+                        </div>
+                    </div>
+
+                    <SeasonShowcase />
+                </motion.div>
+
+                {/* PILLAR 2 — Live Vigilance & Theft Watch */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.7 }}
+                >
+                    <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 sm:mb-10">
+                        <div>
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-400/30 text-[10px] uppercase tracking-widest text-rose-300 font-semibold mb-4">
+                                <ShieldAlert size={11} /> 02 · Live Vigilance
+                            </div>
+                            <h3 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight leading-[1.05] max-w-2xl">
+                                Eyes on every shelf, <span className="italic font-light text-rose-300">24 × 7.</span>
+                            </h3>
+                            <p className="mt-4 text-sm sm:text-base text-white/55 font-light max-w-2xl leading-relaxed">
+                                Every CCTV stream in your store flows through PROX. He doesn't just record — he <span className="text-white/85">watches</span>. Suspicious behaviour, bag tampering, missing scans, after-hours motion — PROX flags it the second it happens and pings you live, with the exact clip attached.
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-2 text-[10px] text-white/40 uppercase tracking-[0.25em] font-semibold whitespace-nowrap">
+                            <Bell size={12} className="text-rose-400" /> Instant theft alerts
+                        </div>
+                    </div>
+
+                    <VigilanceShowcase />
+                </motion.div>
+
+                {/* Outcome strip */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.7 }}
+                    className="mt-16 sm:mt-24 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
+                >
+                    {[
+                        { val: "+38%", label: "Avg. seasonal lift" },
+                        { val: "−62%", label: "Stock-outs avoided" },
+                        { val: "<2s", label: "Theft alert latency" },
+                        { val: "24×7", label: "PROX never sleeps" },
+                    ].map((s, i) => (
+                        <div key={i} className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 text-center">
+                            <div className="text-2xl sm:text-3xl font-display font-semibold tracking-tight bg-gradient-to-br from-orange-300 via-amber-200 to-red-400 bg-clip-text text-transparent">
+                                {s.val}
+                            </div>
+                            <div className="text-[10px] uppercase tracking-widest text-white/40 mt-1.5 font-semibold">{s.label}</div>
+                        </div>
+                    ))}
+                </motion.div>
+            </div>
+        </section>
+    );
+}
+
+/* ─────────── Season Showcase: interactive cycling forecast ─────────── */
+const SEASON_CURVES: Record<string, number[]> = {
+    Monsoon: [20, 22, 28, 35, 48, 62, 78, 92, 88, 70, 55, 40, 32, 28],
+    "Back to School": [25, 30, 38, 50, 68, 85, 96, 88, 70, 55, 42, 35, 30, 28],
+    Summer: [30, 38, 48, 60, 75, 90, 96, 90, 80, 65, 50, 40, 32, 28],
+    "Festive & Winter": [22, 26, 32, 42, 58, 76, 92, 98, 95, 82, 65, 48, 36, 28],
+};
+const SEASON_METRICS: Record<string, { lift: number; sku: number; reorder: string }> = {
+    Monsoon: { lift: 212, sku: 184, reorder: "12 days" },
+    "Back to School": { lift: 180, sku: 142, reorder: "21 days" },
+    Summer: { lift: 95, sku: 96, reorder: "9 days" },
+    "Festive & Winter": { lift: 168, sku: 220, reorder: "30 days" },
+};
+
+function SeasonShowcase() {
+    const [active, setActive] = useState(0);
+    const [autoplay, setAutoplay] = useState(true);
+    useEffect(() => {
+        if (!autoplay) return;
+        const id = setInterval(() => setActive((a) => (a + 1) % SEASONS.length), 4500);
+        return () => clearInterval(id);
+    }, [autoplay]);
+
+    const s = SEASONS[active];
+    const Icon = s.Icon;
+    const curve = SEASON_CURVES[s.name];
+    const metrics = SEASON_METRICS[s.name];
+    const peak = Math.max(...curve);
+
+    // Build SVG path
+    const w = 600, h = 200, pad = 12;
+    const xStep = (w - pad * 2) / (curve.length - 1);
+    const pts = curve.map((v, i) => ({
+        x: pad + i * xStep,
+        y: pad + (1 - v / 100) * (h - pad * 2),
+    }));
+    const linePath = pts.reduce((acc, p, i) => acc + (i === 0 ? `M${p.x},${p.y}` : ` L${p.x.toFixed(1)},${p.y.toFixed(1)}`), "");
+    const areaPath = `${linePath} L${pts[pts.length - 1].x},${h} L${pts[0].x},${h} Z`;
+    const peakIdx = curve.indexOf(peak);
+    const peakPt = pts[peakIdx];
+
+    return (
+        <div className="grid lg:grid-cols-5 gap-5">
+            {/* LEFT: Forecast hero card */}
+            <motion.div
+                layout
+                className="lg:col-span-3 relative rounded-3xl overflow-hidden border border-white/10 bg-ink-900/60 backdrop-blur p-6 sm:p-8"
+                onMouseEnter={() => setAutoplay(false)}
+                onMouseLeave={() => setAutoplay(true)}
+            >
+                {/* Animated colored backdrop */}
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={s.name}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className={`absolute inset-0 bg-gradient-to-br ${s.gradient} pointer-events-none`}
+                    />
+                </AnimatePresence>
+                <motion.div
+                    aria-hidden
+                    className="absolute -top-32 -right-20 w-80 h-80 rounded-full blur-3xl opacity-50 pointer-events-none"
+                    style={{ background: s.accent }}
+                    animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.6, 0.4] }}
+                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                />
+
+                <div className="relative">
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={s.name + "-icon"}
+                                    initial={{ rotate: -45, scale: 0.6, opacity: 0 }}
+                                    animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                                    exit={{ rotate: 45, scale: 0.6, opacity: 0 }}
+                                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                                    className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                                    style={{ background: `${s.accent}25`, border: `1px solid ${s.accent}55`, boxShadow: `0 0 24px ${s.accent}40` }}
+                                >
+                                    <Icon size={20} style={{ color: s.accent }} />
+                                </motion.div>
+                            </AnimatePresence>
+                            <div>
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={s.name}
+                                        initial={{ opacity: 0, y: 8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -8 }}
+                                        transition={{ duration: 0.4 }}
+                                    >
+                                        <div className="text-xl font-semibold leading-tight">{s.name}</div>
+                                        <div className="text-[10px] tracking-[0.2em] uppercase text-white/40 font-mono mt-0.5">{s.period}</div>
+                                    </motion.div>
+                                </AnimatePresence>
+                            </div>
+                        </div>
+                        {/* Live demand chip */}
+                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/40 border border-white/10">
+                            <span className="relative flex w-1.5 h-1.5">
+                                <span className="absolute inset-0 rounded-full animate-ping opacity-75" style={{ background: s.accent }} />
+                                <span className="relative inline-flex w-1.5 h-1.5 rounded-full" style={{ background: s.accent }} />
+                            </span>
+                            <span className="text-[9px] font-semibold uppercase tracking-widest text-white/60">Forecast Live</span>
+                        </div>
+                    </div>
+
+                    {/* Forecast curve */}
+                    <div className="relative">
+                        <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-44 sm:h-52" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id={`seasonFill-${active}`} x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor={s.accent} stopOpacity="0.55" />
+                                    <stop offset="100%" stopColor={s.accent} stopOpacity="0" />
+                                </linearGradient>
+                            </defs>
+                            {/* Grid */}
+                            {[40, 80, 120, 160].map((g) => (
+                                <line key={g} x1={pad} x2={w - pad} y1={g} y2={g} stroke="rgba(255,255,255,0.06)" strokeDasharray="2 4" strokeWidth="0.5" />
+                            ))}
+                            <AnimatePresence mode="wait">
+                                <motion.path
+                                    key={s.name + "-area"}
+                                    d={areaPath}
+                                    fill={`url(#seasonFill-${active})`}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.6 }}
+                                />
+                            </AnimatePresence>
+                            <AnimatePresence mode="wait">
+                                <motion.path
+                                    key={s.name + "-line"}
+                                    d={linePath}
+                                    fill="none"
+                                    stroke={s.accent}
+                                    strokeWidth="2.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    initial={{ pathLength: 0, opacity: 0 }}
+                                    animate={{ pathLength: 1, opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+                                    style={{ filter: `drop-shadow(0 0 8px ${s.accent}80)` }}
+                                />
+                            </AnimatePresence>
+                            {/* Peak marker */}
+                            <motion.circle
+                                cx={peakPt.x}
+                                cy={peakPt.y}
+                                r="5"
+                                fill={s.accent}
+                                initial={{ opacity: 0, scale: 0 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 1.4, type: "spring" }}
+                            />
+                            <motion.circle
+                                cx={peakPt.x}
+                                cy={peakPt.y}
+                                r="10"
+                                fill="none"
+                                stroke={s.accent}
+                                strokeWidth="1.2"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: [0, 0.6, 0], scale: [1, 2.2, 1] }}
+                                transition={{ delay: 1.6, duration: 2, repeat: Infinity }}
+                                style={{ transformOrigin: `${peakPt.x}px ${peakPt.y}px` }}
+                            />
+                        </svg>
+                        {/* Peak tooltip */}
+                        <motion.div
+                            key={s.name + "-tip"}
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 1.6, duration: 0.5 }}
+                            className="absolute pointer-events-none"
+                            style={{ left: `${(peakPt.x / w) * 100}%`, top: `${(peakPt.y / h) * 100}%` }}
+                        >
+                            <div className="-translate-x-1/2 -translate-y-[140%]">
+                                <div
+                                    className="px-2 py-1 rounded-md text-[10px] font-bold whitespace-nowrap shadow-lg"
+                                    style={{ background: s.accent, color: "#0a0a14" }}
+                                >
+                                    PEAK · +{metrics.lift}%
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+
+                    {/* Metrics */}
+                    <div className="mt-6 grid grid-cols-3 gap-3">
+                        {[
+                            { label: "Demand lift", val: `+${metrics.lift}%` },
+                            { label: "SKUs to stock", val: `${metrics.sku}` },
+                            { label: "Re-order in", val: metrics.reorder },
+                        ].map((m, i) => (
+                            <motion.div
+                                key={s.name + m.label}
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 + i * 0.1 }}
+                                className="p-3 rounded-xl bg-black/30 border border-white/10"
+                            >
+                                <div className="text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-1">{m.label}</div>
+                                <div className="text-lg font-display font-semibold tabular-nums" style={{ color: s.accent }}>{m.val}</div>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    {/* PROX suggestion */}
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={s.name + "-sug"}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.5 }}
+                            className="mt-4 p-3 rounded-xl bg-black/40 border border-white/10 flex items-start gap-2.5"
+                        >
+                            <Sparkles size={14} className="mt-0.5 flex-shrink-0" style={{ color: s.accent }} />
+                            <p className="text-[12px] text-white/75 leading-relaxed">
+                                <span className="font-semibold text-white/90">PROX says — </span>{s.suggestion}
+                            </p>
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+            </motion.div>
+
+            {/* RIGHT: Season switcher + spike products */}
+            <div className="lg:col-span-2 flex flex-col gap-3">
+                {/* Season pills */}
+                <div className="grid grid-cols-2 gap-2">
+                    {SEASONS.map((sn, i) => {
+                        const Sicon = sn.Icon;
+                        const isActive = i === active;
+                        return (
+                            <button
+                                key={sn.name}
+                                onClick={() => { setActive(i); setAutoplay(false); }}
+                                className={`group relative p-3 rounded-xl border text-left overflow-hidden transition-all ${isActive ? "border-white/30 bg-white/[0.06]" : "border-white/10 bg-white/[0.02] hover:bg-white/[0.04]"}`}
+                            >
+                                {isActive && (
+                                    <motion.div
+                                        layoutId="seasonPillGlow"
+                                        className="absolute inset-0 opacity-30"
+                                        style={{ background: `radial-gradient(circle at 30% 30%, ${sn.accent}, transparent 70%)` }}
+                                        transition={{ duration: 0.5 }}
+                                    />
+                                )}
+                                <div className="relative flex items-center gap-2">
+                                    <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${sn.accent}20`, border: `1px solid ${sn.accent}30` }}>
+                                        <Sicon size={13} style={{ color: sn.accent }} />
+                                    </div>
+                                    <div className="leading-tight min-w-0">
+                                        <div className="text-[12px] font-semibold truncate">{sn.name}</div>
+                                        <div className="text-[9px] tracking-wider uppercase text-white/40 font-mono truncate">{sn.period}</div>
+                                    </div>
+                                </div>
+                                {isActive && (
+                                    <motion.span
+                                        layoutId="seasonPillBar"
+                                        className="absolute bottom-0 left-0 right-0 h-[2px]"
+                                        style={{ background: sn.accent }}
+                                    />
+                                )}
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {/* Trending products with animated bars */}
+                <div className="flex-1 p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10">
+                    <div className="flex items-center justify-between mb-3">
+                        <div className="text-[10px] uppercase tracking-widest text-white/50 font-semibold">Trending products</div>
+                        <span className="text-[9px] tracking-wider uppercase text-white/30 font-mono">vs last year</span>
+                    </div>
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={s.name + "-bars"}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.4 }}
+                            className="space-y-3"
+                        >
+                            {s.spikes.map((sp, i) => {
+                                const lift = 60 + (metrics.lift / 4) + Math.round(Math.sin((i + active) * 7) * 25);
+                                return (
+                                    <div key={sp + s.name}>
+                                        <div className="flex items-center justify-between mb-1">
+                                            <span className="text-[12px] text-white/80">{sp}</span>
+                                            <span className="text-[11px] font-mono tabular-nums font-semibold" style={{ color: s.accent }}>+{lift}%</span>
+                                        </div>
+                                        <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
+                                            <motion.div
+                                                initial={{ width: 0 }}
+                                                animate={{ width: `${Math.min(lift, 100)}%` }}
+                                                transition={{ duration: 0.9, delay: 0.05 * i, ease: [0.22, 1, 0.36, 1] }}
+                                                className="h-full rounded-full"
+                                                style={{ background: `linear-gradient(90deg, ${s.accent}, ${s.accent}80)` }}
+                                            />
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+
+                {/* Auto-cycle indicator */}
+                <div className="flex items-center justify-between text-[9px] uppercase tracking-widest text-white/30 font-mono px-1">
+                    <span className="flex items-center gap-1.5">
+                        <span className={`w-1 h-1 rounded-full ${autoplay ? "bg-emerald-400 animate-pulse" : "bg-white/30"}`} />
+                        {autoplay ? "Auto-cycling" : "Paused on hover"}
+                    </span>
+                    <span>{active + 1} / {SEASONS.length}</span>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+/* ─────────── Vigilance Showcase: multi-camera + phone alerts ─────────── */
+const CAM_FEEDS = [
+    { id: "CAM-01", zone: "Entrance",  bbox: { x: 28, y: 30, w: 22, h: 50 }, label: "Person · OK", color: "#10b981", level: "ok" },
+    { id: "CAM-02", zone: "Checkout",  bbox: { x: 38, y: 25, w: 30, h: 55 }, label: "Cart · scanning", color: "#0ea5e9", level: "ok" },
+    { id: "CAM-03", zone: "Aisle 3",   bbox: { x: 36, y: 28, w: 26, h: 52 }, label: "Item concealed", color: "#f43f5e", level: "alert" },
+    { id: "CAM-04", zone: "Stockroom", bbox: { x: 22, y: 22, w: 30, h: 56 }, label: "Motion · after-hours", color: "#f59e0b", level: "warn" },
+];
+const VIG_EVENTS = [
+    { time: "now",     cam: "CAM-03", text: "Item concealed in jacket — Aisle 3", color: "#f43f5e", level: "alert" },
+    { time: "0:02",    cam: "CAM-04", text: "Motion detected after store hours", color: "#f59e0b", level: "warn" },
+    { time: "0:08",    cam: "CAM-02", text: "Register skipped — unscanned exit", color: "#f43f5e", level: "alert" },
+    { time: "0:15",    cam: "CAM-01", text: "Returning customer — face matched", color: "#10b981", level: "ok" },
+    { time: "0:22",    cam: "CAM-03", text: "Loitering > 4 min near electronics", color: "#f59e0b", level: "warn" },
+    { time: "0:31",    cam: "CAM-04", text: "Bag tampering detected", color: "#f43f5e", level: "alert" },
+];
+
+function VigilanceShowcase() {
+    const [focus, setFocus] = useState(2); // CAM-03 (alert) by default
+    const [eventIdx, setEventIdx] = useState(0);
+    const [shrinkage, setShrinkage] = useState(247);
+    const [latency, setLatency] = useState(1.8);
+
+    useEffect(() => {
+        const id = setInterval(() => setEventIdx((i) => (i + 1) % VIG_EVENTS.length), 2200);
+        return () => clearInterval(id);
+    }, []);
+    useEffect(() => {
+        const id = setInterval(() => {
+            setShrinkage((s) => s + (Math.random() < 0.4 ? 1 : 0));
+            setLatency(1.4 + Math.random() * 0.8);
+        }, 1400);
+        return () => clearInterval(id);
+    }, []);
+
+    const focusCam = CAM_FEEDS[focus];
+    const event = VIG_EVENTS[eventIdx];
+
+    return (
+        <div className="grid lg:grid-cols-5 gap-5">
+            {/* LEFT: Camera grid + focus view */}
+            <div className="lg:col-span-3 space-y-3">
+                {/* Focus camera (big) */}
+                <motion.div
+                    layout
+                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    className="relative rounded-3xl overflow-hidden border border-white/10 bg-ink-900 aspect-[16/9]"
+                >
+                    {/* CRT scanlines */}
+                    <div aria-hidden className="absolute inset-0 opacity-25 pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 4px)" }} />
+                    {/* Vignette */}
+                    <div aria-hidden className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(circle at 50% 50%, transparent 30%, rgba(0,0,0,0.7) 100%)" }} />
+                    {/* Color tint based on alert level */}
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={focusCam.id}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 0.15 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="absolute inset-0 pointer-events-none"
+                            style={{ background: `radial-gradient(circle at 50% 60%, ${focusCam.color}, transparent 70%)` }}
+                        />
+                    </AnimatePresence>
+                    {/* Sweep beam */}
+                    <motion.div
+                        className="absolute inset-x-0 h-[2px]"
+                        style={{ background: `${focusCam.color}99`, boxShadow: `0 0 18px ${focusCam.color}` }}
+                        animate={{ top: ["0%", "100%", "0%"] }}
+                        transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+                    />
+                    {/* Top bar */}
+                    <div className="absolute top-3 left-3 flex items-center gap-2">
+                        <span className="relative flex w-2 h-2">
+                            <span className="absolute inset-0 rounded-full animate-ping opacity-75" style={{ background: focusCam.color }} />
+                            <span className="relative inline-flex w-2 h-2 rounded-full" style={{ background: focusCam.color }} />
+                        </span>
+                        <AnimatePresence mode="wait">
+                            <motion.span
+                                key={focusCam.id + "-zone"}
+                                initial={{ opacity: 0, x: -6 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 6 }}
+                                transition={{ duration: 0.3 }}
+                                className="text-[11px] text-white/80 font-mono tracking-wider uppercase"
+                            >
+                                {focusCam.id} · {focusCam.zone}
+                            </motion.span>
+                        </AnimatePresence>
+                    </div>
+                    <div className="absolute top-3 right-3 flex items-center gap-2 text-[10px] text-white/50 font-mono tracking-wider">
+                        <Activity size={11} className="text-emerald-400" />
+                        REC · 1080p · <LiveClock />
+                    </div>
+
+                    {/* Detection bbox */}
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={focusCam.id + "-bbox"}
+                            initial={{ opacity: 0, scale: 0.85 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.85 }}
+                            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                            className="absolute border-2 rounded-sm"
+                            style={{
+                                left: `${focusCam.bbox.x}%`,
+                                top: `${focusCam.bbox.y}%`,
+                                width: `${focusCam.bbox.w}%`,
+                                height: `${focusCam.bbox.h}%`,
+                                borderColor: focusCam.color,
+                                boxShadow: `0 0 24px ${focusCam.color}80`,
+                            }}
+                        >
+                            <span className="absolute -top-px -left-px w-2.5 h-2.5 border-t-2 border-l-2" style={{ borderColor: focusCam.color }} />
+                            <span className="absolute -top-px -right-px w-2.5 h-2.5 border-t-2 border-r-2" style={{ borderColor: focusCam.color }} />
+                            <span className="absolute -bottom-px -left-px w-2.5 h-2.5 border-b-2 border-l-2" style={{ borderColor: focusCam.color }} />
+                            <span className="absolute -bottom-px -right-px w-2.5 h-2.5 border-b-2 border-r-2" style={{ borderColor: focusCam.color }} />
+                            <motion.div
+                                animate={{ opacity: [0.7, 1, 0.7] }}
+                                transition={{ duration: 1.4, repeat: Infinity }}
+                                className="absolute -top-6 left-0 px-2 py-0.5 rounded-sm text-[10px] font-bold text-white whitespace-nowrap"
+                                style={{ background: focusCam.color }}
+                            >
+                                {focusCam.label}
+                            </motion.div>
+                            {/* Cross-hair */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="w-3 h-px" style={{ background: focusCam.color }} />
+                                <span className="absolute w-px h-3" style={{ background: focusCam.color }} />
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {/* Confidence bar */}
+                    <div className="absolute bottom-3 left-3 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur border border-white/10">
+                        <Eye size={12} style={{ color: focusCam.color }} />
+                        <span className="text-[10px] text-white/70 font-mono">PROX confidence</span>
+                        <div className="w-16 h-1 rounded-full bg-white/10 overflow-hidden">
+                            <motion.div
+                                key={focusCam.id + "-conf"}
+                                initial={{ width: 0 }}
+                                animate={{ width: focusCam.level === "alert" ? "94%" : focusCam.level === "warn" ? "78%" : "62%" }}
+                                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                                className="h-full"
+                                style={{ background: focusCam.color }}
+                            />
+                        </div>
+                        <span className="text-[10px] font-mono tabular-nums" style={{ color: focusCam.color }}>
+                            {focusCam.level === "alert" ? "94%" : focusCam.level === "warn" ? "78%" : "62%"}
+                        </span>
+                    </div>
+
+                    {/* Audio waveform */}
+                    <div className="absolute bottom-3 right-3 flex items-end gap-0.5 h-5">
+                        {Array.from({ length: 14 }).map((_, i) => (
+                            <motion.span
+                                key={i}
+                                className="w-0.5 rounded-full"
+                                style={{ background: focusCam.color, opacity: 0.7 }}
+                                animate={{ height: ["20%", `${30 + ((i * 13) % 70)}%`, "20%"] }}
+                                transition={{ duration: 0.8 + (i % 5) * 0.15, repeat: Infinity, ease: "easeInOut", delay: i * 0.05 }}
+                            />
+                        ))}
+                    </div>
+                </motion.div>
+
+                {/* 4-camera thumbstrip */}
+                <div className="grid grid-cols-4 gap-2">
+                    {CAM_FEEDS.map((cam, i) => {
+                        const isActive = i === focus;
+                        return (
+                            <button
+                                key={cam.id}
+                                onClick={() => setFocus(i)}
+                                className={`relative aspect-video rounded-lg overflow-hidden bg-ink-900 border transition-all ${isActive ? "border-white/40 scale-[1.02]" : "border-white/10 hover:border-white/20 opacity-70 hover:opacity-100"}`}
+                            >
+                                <div aria-hidden className="absolute inset-0 opacity-30" style={{ backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 3px)" }} />
+                                <div className="absolute inset-0" style={{ background: `radial-gradient(circle at 50% 60%, ${cam.color}25, transparent 70%)` }} />
+                                <motion.div
+                                    className="absolute inset-x-0 h-[1px]"
+                                    style={{ background: `${cam.color}88` }}
+                                    animate={{ top: ["0%", "100%", "0%"] }}
+                                    transition={{ duration: 4 + i * 0.5, repeat: Infinity, ease: "linear" }}
+                                />
+                                {/* Mini bbox */}
+                                <div
+                                    className="absolute border rounded-[1px]"
+                                    style={{
+                                        left: `${cam.bbox.x}%`, top: `${cam.bbox.y}%`,
+                                        width: `${cam.bbox.w}%`, height: `${cam.bbox.h}%`,
+                                        borderColor: cam.color,
+                                    }}
+                                />
+                                <div className="absolute top-1 left-1 flex items-center gap-1">
+                                    <span className="w-1 h-1 rounded-full" style={{ background: cam.color }} />
+                                    <span className="text-[7px] font-mono text-white/70 tracking-wider">{cam.id}</span>
+                                </div>
+                                {cam.level === "alert" && (
+                                    <span className="absolute top-1 right-1 px-1 rounded text-[7px] font-bold text-white" style={{ background: cam.color }}>
+                                        !
+                                    </span>
+                                )}
+                            </button>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* RIGHT: Phone alert + event ticker + counters */}
+            <div className="lg:col-span-2 flex flex-col gap-3">
+                {/* Phone mockup */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="relative rounded-3xl bg-gradient-to-b from-ink-900 to-black border border-white/10 p-4 overflow-hidden"
+                >
+                    <div className="text-[10px] uppercase tracking-widest text-white/40 font-semibold mb-3 flex items-center gap-2">
+                        <Bell size={11} className="text-rose-400" />
+                        Owner's phone · live
+                    </div>
+                    <div className="relative mx-auto w-full max-w-[260px]">
+                        {/* Phone frame */}
+                        <div className="relative rounded-[28px] bg-black border border-white/10 p-1.5 shadow-2xl">
+                            <div className="relative rounded-[22px] bg-gradient-to-br from-ink-900 via-ink-950 to-black aspect-[9/16] overflow-hidden">
+                                {/* Notch */}
+                                <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-16 h-3 rounded-full bg-black z-20" />
+                                {/* Status bar */}
+                                <div className="absolute top-1.5 left-3 right-3 flex justify-between items-center text-[7px] text-white/40 font-mono z-10">
+                                    <span><LiveClock /></span>
+                                    <span>•••</span>
+                                </div>
+
+                                {/* Wallpaper glow */}
+                                <div className="absolute inset-0 opacity-40" style={{ background: "radial-gradient(circle at 30% 20%, #fb923c33, transparent 60%), radial-gradient(circle at 70% 80%, #f43f5e33, transparent 60%)" }} />
+
+                                {/* Notification stack */}
+                                <div className="absolute inset-x-2 top-8 space-y-1.5">
+                                    <AnimatePresence mode="popLayout" initial={false}>
+                                        <motion.div
+                                            key={eventIdx}
+                                            layout
+                                            initial={{ opacity: 0, y: -20, scale: 0.9 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.9 }}
+                                            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                                            className="rounded-xl bg-white/[0.08] backdrop-blur-md border p-2 shadow-lg"
+                                            style={{ borderColor: `${event.color}55` }}
+                                        >
+                                            <div className="flex items-center gap-1.5 mb-1">
+                                                <div className="w-4 h-4 rounded bg-orange-500 flex items-center justify-center">
+                                                    <Sparkles size={8} className="text-white" />
+                                                </div>
+                                                <span className="text-[8px] font-semibold text-white/90">PROX · Probiz Retail</span>
+                                                <span className="ml-auto text-[7px] text-white/40 font-mono">{event.time}</span>
+                                            </div>
+                                            <div className="text-[9px] text-white/85 leading-snug font-medium">{event.text}</div>
+                                            <div className="mt-1 flex items-center gap-1">
+                                                <span className="px-1.5 py-px rounded text-[7px] font-bold" style={{ background: `${event.color}22`, color: event.color }}>
+                                                    {event.level === "alert" ? "ALERT" : event.level === "warn" ? "WARN" : "INFO"}
+                                                </span>
+                                                <span className="text-[7px] text-white/40 font-mono">{event.cam}</span>
+                                            </div>
+                                        </motion.div>
+                                    </AnimatePresence>
+                                    {/* Older notifications */}
+                                    {[1, 2].map((offset) => {
+                                        const e = VIG_EVENTS[(eventIdx + VIG_EVENTS.length - offset) % VIG_EVENTS.length];
+                                        return (
+                                            <motion.div
+                                                key={`old-${offset}-${eventIdx}`}
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 - offset * 0.3 }}
+                                                className="rounded-xl bg-white/[0.04] border border-white/10 p-1.5"
+                                                style={{ transform: `scale(${1 - offset * 0.04})` }}
+                                            >
+                                                <div className="text-[8px] text-white/60 truncate">{e.text}</div>
+                                            </motion.div>
+                                        );
+                                    })}
+                                </div>
+
+                                {/* Buzz indicator */}
+                                <motion.div
+                                    className="absolute -inset-1 rounded-[24px] border-2 border-rose-400/60 pointer-events-none"
+                                    animate={{ opacity: event.level === "alert" ? [0, 0.6, 0] : 0 }}
+                                    transition={{ duration: 1, repeat: Infinity }}
+                                />
+                            </div>
+                        </div>
+                        {/* Buzz waves */}
+                        {event.level === "alert" && (
+                            <motion.div
+                                className="absolute inset-0 rounded-[28px] pointer-events-none"
+                                animate={{ scale: [1, 1.06, 1] }}
+                                transition={{ duration: 0.8, repeat: Infinity }}
+                            />
+                        )}
+                    </div>
+                </motion.div>
+
+                {/* Live event ticker */}
+                <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-4">
+                    <div className="flex items-center justify-between mb-2">
+                        <div className="text-[10px] uppercase tracking-widest text-white/50 font-semibold flex items-center gap-1.5">
+                            <Activity size={11} className="text-rose-400" /> Live event log
+                        </div>
+                        <span className="flex items-center gap-1 text-[9px] uppercase tracking-widest text-emerald-400 font-mono">
+                            <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" /> streaming
+                        </span>
+                    </div>
+                    <div className="space-y-1.5 min-h-[100px]">
+                        <AnimatePresence mode="popLayout" initial={false}>
+                            {Array.from({ length: 4 }, (_, i) => {
+                                const e = VIG_EVENTS[(eventIdx + i) % VIG_EVENTS.length];
+                                return (
+                                    <motion.div
+                                        key={`${eventIdx}-${i}`}
+                                        layout
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1 - i * 0.18, x: 0 }}
+                                        exit={{ opacity: 0, x: 10 }}
+                                        transition={{ duration: 0.35, delay: i * 0.03 }}
+                                        className="flex items-center gap-2 py-1"
+                                    >
+                                        <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: e.color }} />
+                                        <span className="text-[10px] font-mono text-white/40 tabular-nums">{e.time}</span>
+                                        <span className="text-[10px] text-white/70 truncate">{e.text}</span>
+                                    </motion.div>
+                                );
+                            })}
+                        </AnimatePresence>
+                    </div>
+                </div>
+
+                {/* Live counters */}
+                <div className="grid grid-cols-2 gap-2">
+                    <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10">
+                        <div className="text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-1">Avg. alert latency</div>
+                        <div className="text-lg font-display font-semibold text-rose-300 tabular-nums">{latency.toFixed(2)}<span className="text-xs text-white/50 ml-0.5">s</span></div>
+                    </div>
+                    <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10">
+                        <div className="text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-1">Shrinkage saved</div>
+                        <div className="text-lg font-display font-semibold text-emerald-300 tabular-nums">₹{shrinkage.toLocaleString("en-IN")}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function LiveClock() {
+    const [t, setT] = useState("");
+    useEffect(() => {
+        const fmt = () => {
+            const d = new Date();
+            const pad = (n: number) => String(n).padStart(2, "0");
+            setT(`${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`);
+        };
+        fmt();
+        const id = setInterval(fmt, 1000);
+        return () => clearInterval(id);
+    }, []);
+    return <span className="tabular-nums">{t}</span>;
+}
+
 /* ─────────── Sticky outline navigator ─────────── */
 const OUTLINE_SECTIONS = [
     { id: "prox-hero", label: "Intro" },
     { id: "prox-identity", label: "Identity" },
     { id: "prox-personality", label: "Personality" },
     { id: "prox-powers", label: "Abilities" },
+    { id: "prox-retail", label: "In Retail" },
     { id: "prox-galaxy", label: "Galaxy" },
     { id: "prox-credits", label: "Credits" },
 ];

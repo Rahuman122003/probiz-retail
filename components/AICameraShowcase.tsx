@@ -204,7 +204,7 @@ function CameraGrid() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 1.2, duration: 0.8, ease }}
-                className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 glass-dark rounded-xl p-3 sm:p-4 max-w-[200px] sm:max-w-[240px] shadow-2xl"
+                className="absolute top-full left-0 sm:-left-3 mt-3 glass-dark rounded-xl p-3 sm:p-4 max-w-[200px] sm:max-w-[240px] shadow-2xl z-20"
             >
                 <motion.div animate={{ y: [0, -4, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}>
                     <div className="flex items-center gap-2 mb-2">
@@ -534,7 +534,7 @@ function EventLog() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 1.4, duration: 0.8, ease }}
-            className="absolute -top-4 -right-2 sm:-top-5 sm:-right-5 glass-dark rounded-xl px-3 py-2.5 shadow-2xl min-w-[200px]"
+            className="absolute bottom-full right-0 sm:-right-3 mb-3 glass-dark rounded-xl px-3 py-2.5 shadow-2xl min-w-[200px] z-20"
         >
             <div className="flex items-center gap-1.5 mb-1.5">
                 <span className="relative flex w-1.5 h-1.5">
