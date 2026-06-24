@@ -13,6 +13,7 @@ const navLinks = [
     { label: "PROX", href: "/prox" },
     { label: "Pricing", href: "/pricing" },
     { label: "Customers", href: "/customers" },
+    { label: "Blog", href: "https://blogsbyprobiz.vercel.app/probiz-retail/blogs", external: true },
 ];
 
 export default function Navbar() {
@@ -51,9 +52,15 @@ export default function Navbar() {
                     <ul className="hidden md:flex items-center gap-9 text-[13px] text-ink-600">
                         {navLinks.map((l) => (
                             <li key={l.label}>
-                                <Link href={l.href} className="hover:text-ink-900 transition-colors">
-                                    {l.label}
-                                </Link>
+                                {l.external ? (
+                                    <a href={l.href} target="_blank" rel="noopener noreferrer" className="hover:text-ink-900 transition-colors">
+                                        {l.label}
+                                    </a>
+                                ) : (
+                                    <Link href={l.href} className="hover:text-ink-900 transition-colors">
+                                        {l.label}
+                                    </Link>
+                                )}
                             </li>
                         ))}
                     </ul>
@@ -88,13 +95,25 @@ export default function Navbar() {
                             <ul className="space-y-1">
                                 {navLinks.map((l) => (
                                     <li key={l.label}>
-                                        <Link
-                                            href={l.href}
-                                            onClick={() => setMobileOpen(false)}
-                                            className="block py-3 px-4 rounded-xl text-base font-medium text-ink-700 hover:bg-ink-50 transition-colors"
-                                        >
-                                            {l.label}
-                                        </Link>
+                                        {l.external ? (
+                                            <a
+                                                href={l.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                onClick={() => setMobileOpen(false)}
+                                                className="block py-3 px-4 rounded-xl text-base font-medium text-ink-700 hover:bg-ink-50 transition-colors"
+                                            >
+                                                {l.label}
+                                            </a>
+                                        ) : (
+                                            <Link
+                                                href={l.href}
+                                                onClick={() => setMobileOpen(false)}
+                                                className="block py-3 px-4 rounded-xl text-base font-medium text-ink-700 hover:bg-ink-50 transition-colors"
+                                            >
+                                                {l.label}
+                                            </Link>
+                                        )}
                                     </li>
                                 ))}
                             </ul>

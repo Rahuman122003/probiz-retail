@@ -13,7 +13,7 @@ const footerLinks = [
         { label: "About", href: "/about" },
         { label: "Customers", href: "/customers" },
         { label: "Careers", href: "/careers" },
-        { label: "Press", href: "/press" },
+        { label: "Blog", href: "https://blogsbyprobiz.vercel.app/probiz-retail/blogs", external: true },
     ]},
     { h: "Resources", l: [
         { label: "Docs", href: "/docs" },
@@ -44,7 +44,11 @@ export default function Footer() {
                             <ul className="space-y-2.5 sm:space-y-3 text-sm">
                                 {c.l.map((item) => (
                                     <li key={item.label}>
-                                        <Link href={item.href} className="hover:text-white transition-colors">{item.label}</Link>
+                                        {item.external ? (
+                                            <a href={item.href} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">{item.label}</a>
+                                        ) : (
+                                            <Link href={item.href} className="hover:text-white transition-colors">{item.label}</Link>
+                                        )}
                                     </li>
                                 ))}
                             </ul>
